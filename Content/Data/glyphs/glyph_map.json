@@ -1,0 +1,58 @@
+{
+  // Map tiles
+  "tile_floor":         { "glyph": ".", "colorOverride": null },
+  "tile_wall":          { "glyph": "#", "colorOverride": null },
+  "tile_door_closed":   { "glyph": "+", "colorOverride": "#AA7733" },
+  "tile_stairs_down":   { "glyph": ">", "colorOverride": "#FFDD88" },
+
+  // Creatures
+  "creature_player":    { "glyph": "@", "colorOverride": "#00FF88" },
+  "creature_rat":       { "glyph": "r", "colorOverride": "#BBBBBB" },
+  "creature_goblin":    { "glyph": "g", "colorOverride": "#44FF44" },
+  "creature_orc":       { "glyph": "o", "colorOverride": "#AA4422" },
+  "creature_troll":     { "glyph": "T", "colorOverride": "#228844" },
+
+  // Consumables
+  "item_potion_health": { "glyph": "!", "colorOverride": "#FF4444" },
+
+  // Weapons
+  "item_dagger":        { "glyph": "/", "colorOverride": "#DDDDDD" },
+  "item_sword":         { "glyph": "/", "colorOverride": "#CCCCCC" },
+  "item_battle_axe":    { "glyph": "\\", "colorOverride": "#AAAAFF" },
+
+  // Armour
+  "item_leather_armor": { "glyph": "[", "colorOverride": "#AA8844" },
+  "item_shield":        { "glyph": ")", "colorOverride": "#8888CC" },
+  "item_chainmail":     { "glyph": "[", "colorOverride": "#CCCCEE" },
+
+  // Gold
+  "item_gold":          { "glyph": "$", "colorOverride": "#FFDD00" },
+  "item_gold_coin":     { "glyph": "$", "colorOverride": "#FFDD00" },
+
+  // Wilderness creatures
+  "creature_wolf":      { "glyph": "w", "colorOverride": "#BBBBBB" },
+  "creature_boar":      { "glyph": "b", "colorOverride": "#8B6914" },
+
+  // Wilderness loot
+  "item_pelt":          { "glyph": "~", "colorOverride": "#BBBBBB" },
+  "item_tusk":          { "glyph": "i", "colorOverride": "#FFDD88" },
+
+  // Village Content
+  "tile_grass":         { "glyph": ".", "colorOverride": null },
+  "tile_dirt":          { "glyph": ",", "colorOverride": null },
+  "tile_cobblestone":   { "glyph": ":", "colorOverride": null },
+  "tile_wood_floor":    { "glyph": "=", "colorOverride": null },
+  "tile_wood_wall":     { "glyph": "+", "colorOverride": null },
+  "tile_well":          { "glyph": "o", "colorOverride": null },
+  "env_forge":          { "glyph": "&", "colorOverride": null },
+  "env_hut":            { "glyph": "^", "colorOverride": null },
+  "env_river":          { "glyph": "~", "colorOverride": null },
+  "env_tree":           { "glyph": "T", "colorOverride": null },
+  "npc_blacksmith":     { "glyph": "B", "colorOverride": null },
+  "npc_villager":       { "glyph": "v", "colorOverride": null },
+  "item_bucket":        { "glyph": "u", "colorOverride": null },
+  "item_bucket_water":  { "glyph": "u", "colorOverride": null },
+  "item_log":           { "glyph": "=", "colorOverride": null },
+  "item_plank":         { "glyph": "-", "colorOverride": null },
+  "item_axe":           { "glyph": "P", "colorOverride": null }
+}

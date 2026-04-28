@@ -1,0 +1,18 @@
+[
+  {
+    "id": "background_blacksmith_child",
+    "name": "Child of a Blacksmith",
+    "description": "You grew up watching your father hammer out steel. You begin with basic tools.",
+    "startingItems": {
+      "item_axe": 1
+    },
+    "factionReputation": {
+      "faction_village": 50
+    },
+    "startingQuests": [
+      "quest_fetch_water",
+      "quest_chop_wood",
+      "quest_cull_wolves"
+    ]
+  }
+]

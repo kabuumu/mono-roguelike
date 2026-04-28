@@ -1,0 +1,22 @@
+# Build outputs
+bin/
+obj/
+
+# MonoGame content pipeline outputs
+Content/bin/
+Content/obj/
+
+# Runtime logs
+crash.log
+*.log
+
+# User-specific files
+*.user
+*.suo
+.vs/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Temporary/scratch files
+test.png

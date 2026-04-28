@@ -1,0 +1,341 @@
+[
+  // ── Village tiles ─────────────────────────────────────────────────────────
+  {
+    "id":             "tile_grass",
+    "name":           "Grass",
+    "spriteKey":      "tile_grass",
+    "colorTint":      "#3A7A3A",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_dirt",
+    "name":           "Dirt Path",
+    "spriteKey":      "tile_dirt",
+    "colorTint":      "#8B6914",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_cobblestone",
+    "name":           "Cobblestone",
+    "spriteKey":      "tile_cobblestone",
+    "colorTint":      "#888880",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wood_floor",
+    "name":           "Wooden Floor",
+    "spriteKey":      "tile_wood_floor",
+    "colorTint":      "#8B6030",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wood_wall",
+    "name":           "Wooden Wall",
+    "spriteKey":      "tile_wood_wall",
+    "colorTint":      "#6B4020",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_well",
+    "name":           "Village Well",
+    "spriteKey":      "tile_well",
+    "colorTint":      "#6688AA",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+
+  // ── Dungeon tiles ─────────────────────────────────────────────────────────
+  {
+    "id":             "tile_floor",
+    "name":           "Stone Floor",
+    "spriteKey":      "tile_floor",
+    "colorTint":      "#555555",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wall",
+    "name":           "Stone Wall",
+    "spriteKey":      "tile_wall",
+    "colorTint":      "#AAAAAA",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_door_closed",
+    "name":           "Closed Door",
+    "spriteKey":      "tile_door_closed",
+    "colorTint":      "#AA7733",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_stairs_down",
+    "name":           "Stairs Down",
+    "spriteKey":      "tile_stairs_down",
+    "colorTint":      "#FFDD88",
+    "blocksMovement": false,
+    "isTile":         true,
+    "isStairs":       true
+  },
+
+  // ── Village NPCs ──────────────────────────────────────────────────────────
+  {
+    "id":             "npc_elder",
+    "name":           "Elder Maren",
+    "spriteKey":      "npc_elder",
+    "colorTint":      "#FFDD88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Welcome to Millhaven, adventurer.",
+      "Dark creatures have crept up from the depths beneath our town.",
+      "If you are brave enough, descend into the dungeon and push them back.",
+      "Return when you have reached the sixth level. Only then will we be safe.",
+      "May fortune guide your blade."
+    ]
+  },
+  {
+    "id":             "npc_merchant",
+    "name":           "Davan the Merchant",
+    "spriteKey":      "npc_merchant",
+    "colorTint":      "#88DD88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Finest goods in all of Millhaven!",
+      "Well... I had goods. The last caravan was attacked on the road.",
+      "Whatever you find down there, keep it. I am out of stock for now.",
+      "Come back once this mess is sorted and I'll give you a real discount."
+    ]
+  },
+  {
+    "id":             "npc_guard",
+    "name":           "Guard Ollen",
+    "spriteKey":      "npc_guard",
+    "colorTint":      "#8899CC",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Halt! ...Actually, go ahead.",
+      "We are stretched thin. Half the guard went down and didn't come back.",
+      "The entrance to the dungeon is to the south. Watch your step.",
+      "If you find any of our gear down there, it's yours."
+    ]
+  },
+  {
+    "id":             "npc_villager_a",
+    "name":           "Petra",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#DDBB88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "My husband went into the dungeon three days ago.",
+      "He said it would only take an hour.",
+      "Please, if you find him... his name is Rolf."
+    ]
+  },
+  {
+    "id":             "npc_villager_b",
+    "name":           "Old Hessa",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#CCAA99",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "I remember when this town had music.",
+      "Now all we hear are those awful sounds from below.",
+      "Every night. Every single night.",
+      "Bring peace to this place, will you?"
+    ]
+  },
+  {
+    "id":             "npc_villager_c",
+    "name":           "Young Tam",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#EECC88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Are you really going down there?",
+      "I heard there are trolls on the lower levels.",
+      "I want to be an adventurer one day too!",
+      "Just... maybe not today."
+    ]
+  },
+  {
+    "id":             "npc_villager_d",
+    "name":           "Mira the Smith",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "My forge is cold. No iron to work.",
+      "Dungeon's cursed the supply routes.",
+      "Find a weapon down there. They're not pretty but they'll hold.",
+      "Aim for the joints on the bigger ones."
+    ]
+  },
+
+  // ── Player ────────────────────────────────────────────────────────────────
+  {
+    "id":             "player",
+    "name":           "Adventurer",
+    "spriteKey":      "creature_player",
+    "colorTint":      "#00FF88",
+    "blocksMovement": true,
+    "maxHealth":      30,
+    "attack":         3,
+    "defense":        0,
+    "hasInventory":   true,
+    "inventorySlots": 10,
+    "hasEquipment":   true
+  },
+
+  // ── Dungeon creatures ─────────────────────────────────────────────────────
+  {
+    "id":             "creature_rat",
+    "name":           "Rat",
+    "spriteKey":      "creature_rat",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "maxHealth":      5,
+    "attack":         2,
+    "defense":        0,
+    "xpValue":        5,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_goblin",
+    "name":           "Goblin",
+    "spriteKey":      "creature_goblin",
+    "colorTint":      "#44FF44",
+    "blocksMovement": true,
+    "maxHealth":      10,
+    "attack":         3,
+    "defense":        0,
+    "xpValue":        10,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_orc",
+    "name":           "Orc",
+    "spriteKey":      "creature_orc",
+    "colorTint":      "#AA4422",
+    "blocksMovement": true,
+    "maxHealth":      18,
+    "attack":         5,
+    "defense":        1,
+    "xpValue":        18,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_troll",
+    "name":           "Troll",
+    "spriteKey":      "creature_troll",
+    "colorTint":      "#228844",
+    "blocksMovement": true,
+    "maxHealth":      30,
+    "attack":         7,
+    "defense":        2,
+    "xpValue":        30,
+    "hasAi":          true
+  },
+
+  // ── Consumables ───────────────────────────────────────────────────────────
+  {
+    "id":             "item_health_potion",
+    "name":           "Health Potion",
+    "spriteKey":      "item_potion_health",
+    "colorTint":      "#FF4444",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "healAmount":     20,
+    "value":          10
+  },
+
+  // ── Weapons ───────────────────────────────────────────────────────────────
+  {
+    "id":             "item_dagger",
+    "name":           "Dagger",
+    "spriteKey":      "item_dagger",
+    "colorTint":      "#DDDDDD",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    2,
+    "value":          15
+  },
+  {
+    "id":             "item_sword",
+    "name":           "Sword",
+    "spriteKey":      "item_sword",
+    "colorTint":      "#CCCCCC",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    4,
+    "value":          30
+  },
+  {
+    "id":             "item_battle_axe",
+    "name":           "Battle Axe",
+    "spriteKey":      "item_battle_axe",
+    "colorTint":      "#AAAAFF",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    6,
+    "value":          50
+  },
+
+  // ── Armour ────────────────────────────────────────────────────────────────
+  {
+    "id":             "item_leather_armor",
+    "name":           "Leather Armour",
+    "spriteKey":      "item_leather_armor",
+    "colorTint":      "#AA8844",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   2,
+    "value":          20
+  },
+  {
+    "id":             "item_shield",
+    "name":           "Shield",
+    "spriteKey":      "item_shield",
+    "colorTint":      "#8888CC",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   3,
+    "value":          25
+  },
+  {
+    "id":             "item_chainmail",
+    "name":           "Chainmail",
+    "spriteKey":      "item_chainmail",
+    "colorTint":      "#CCCCEE",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   5,
+    "value":          45
+  }
+]

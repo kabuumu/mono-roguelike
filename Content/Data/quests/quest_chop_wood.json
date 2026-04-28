@@ -1,0 +1,13 @@
+[
+  {
+    "id": "quest_chop_wood",
+    "name": "Fuel the Forge",
+    "description": "We need more wood for the forge fire. Chop some logs from the trees nearby and process them into planks at the forge.",
+    "requiredItems": {
+      "item_plank": 4
+    },
+    "completionText": "Perfect, this should burn well. Thank you, child.",
+    "turnInNpcId": "npc_blacksmith",
+    "rewardGold": 15
+  }
+]

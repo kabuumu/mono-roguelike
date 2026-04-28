@@ -1,0 +1,69 @@
+[
+  // ── Wilderness creatures ───────────────────────────────────────────────────
+  {
+    "id":             "creature_wolf",
+    "name":           "Wolf",
+    "spriteKey":      "creature_wolf",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "maxHealth":      12,
+    "attack":         4,
+    "defense":        0,
+    "xpValue":        15,
+    "hasAi":          true,
+    "aiBehavior":     "hostile_melee",
+    "faction":        "wild_animals",
+    "drops": [
+      { "itemId": "item_wolf_pelt", "chance": 0.5 }
+    ]
+  },
+  {
+    "id":             "creature_boar",
+    "name":           "Boar",
+    "spriteKey":      "creature_boar",
+    "colorTint":      "#8B6914",
+    "blocksMovement": true,
+    "maxHealth":      16,
+    "attack":         3,
+    "defense":        1,
+    "xpValue":        12,
+    "hasAi":          true,
+    "aiBehavior":     "hostile_melee",
+    "faction":        "wild_animals",
+    "drops": [
+      { "itemId": "item_boar_tusk", "chance": 0.4 }
+    ]
+  },
+
+  // ── Wilderness loot items ──────────────────────────────────────────────────
+  {
+    "id":             "item_wolf_pelt",
+    "name":           "Wolf Pelt",
+    "spriteKey":      "item_pelt",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          15
+  },
+  {
+    "id":             "item_boar_tusk",
+    "name":           "Boar Tusk",
+    "spriteKey":      "item_tusk",
+    "colorTint":      "#FFDD88",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          10
+  },
+  {
+    "id":             "item_gold_coin",
+    "name":           "Gold Coin",
+    "spriteKey":      "item_gold",
+    "colorTint":      "#FFDD00",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          1
+  }
+]

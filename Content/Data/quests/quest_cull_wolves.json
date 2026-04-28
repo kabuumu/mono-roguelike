@@ -1,0 +1,18 @@
+[
+  {
+    "id":           "quest_cull_wolves",
+    "name":         "The Wolf Problem",
+    "description":  "Wolves from the forest have been attacking the village livestock. Cull 5 wolves to make the roads safe again.",
+    "requiredItems": {},
+    "completionText": "The forest feels safer already. Here's your reward.",
+    "objectives": [
+      {
+        "type":          "kill_target",
+        "targetId":      "creature_wolf",
+        "requiredCount": 5
+      }
+    ],
+    "rewardGold":  50,
+    "rewardItems": ["item_health_potion"]
+  }
+]

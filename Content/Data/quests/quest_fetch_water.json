@@ -1,0 +1,13 @@
+[
+  {
+    "id": "quest_fetch_water",
+    "name": "Thirsty Work",
+    "description": "The smith is parched. Fetch a bucket of water from the river.",
+    "requiredItems": {
+      "item_water_bucket": 1
+    },
+    "completionText": "Ah, refreshing! Now I can get back to work.",
+    "turnInNpcId": "npc_blacksmith",
+    "rewardGold": 10
+  }
+]

@@ -1,0 +1,126 @@
+[
+  {
+    "id": "env_forge",
+    "name": "Village Forge",
+    "spriteKey": "env_forge",
+    "colorTint": "#884444",
+    "blocksMovement": true
+  },
+  {
+    "id": "env_hut",
+    "name": "Villager Hut",
+    "spriteKey": "env_hut",
+    "colorTint": "#A07040",
+    "blocksMovement": true
+  },
+  {
+    "id": "env_river_tile",
+    "name": "River",
+    "spriteKey": "env_river",
+    "colorTint": "#2244EE",
+    "blocksMovement": true,
+    "isTile": true
+  },
+  {
+    "id": "env_tree",
+    "name": "Tree",
+    "spriteKey": "env_tree",
+    "colorTint": "#22AA22",
+    "blocksMovement": true
+  },
+  {
+    "id": "npc_blacksmith",
+    "name": "Blacksmith",
+    "spriteKey": "npc_blacksmith",
+    "colorTint": "#CCCCCC",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 20,
+    "startingGold": 120,
+    "shopInventory": [
+      "item_battle_axe",
+      "item_leather_armor",
+      "item_health_potion"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_chop_wood": [
+        "Good work. Water and wood both sorted - the forge is running again.",
+        "Now get out there and make yourself useful. Those wolves won't cull themselves."
+      ],
+      "after_quest_completed:quest_fetch_water": [
+        "Water's in, good. Now we need fuel for the fire.",
+        "Chop some logs from the trees out back and process them into planks at the forge."
+      ],
+      "requires_background:background_blacksmith_child": [
+        "Ah, there you are kid. We need to stay productive.",
+        "The well is dried up and we need water for quenching. Grab the bucket and head to the river.",
+        "Then chop some wood. We need logs to turn into planks.",
+        "Oh, and wolves have been raiding the livestock at night. Cull 5 of them when you get the chance."
+      ],
+      "default": [
+        "Welcome to the forge. I buy pelts and tusks - sell me what you find.",
+        "Need gear? I've got axes, armour, and potions. Gold talks."
+      ]
+    }
+  },
+  {
+    "id": "npc_villager",
+    "name": "Villager",
+    "spriteKey": "npc_villager",
+    "colorTint": "#DDBB88",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "dialogPool": {
+      "default": [
+        "Another quiet day."
+      ],
+      "requires_background:background_blacksmith_child": [
+        "Ah, the smith's kid! How is your father?"
+      ]
+    }
+  },
+  {
+    "id": "item_empty_bucket",
+    "name": "Empty Bucket",
+    "spriteKey": "item_bucket",
+    "colorTint": "#886644",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_water_bucket",
+    "name": "Bucket of Water",
+    "spriteKey": "item_bucket_water",
+    "colorTint": "#4488EE",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_log",
+    "name": "Wood Log",
+    "spriteKey": "item_log",
+    "colorTint": "#6B4020",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_plank",
+    "name": "Wood Plank",
+    "spriteKey": "item_plank",
+    "colorTint": "#8B6030",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_axe",
+    "name": "Lumber Axe",
+    "spriteKey": "item_axe",
+    "colorTint": "#AAAAAA",
+    "isItem": true,
+    "itemType": "Weapon",
+    "attackBonus": 2
+  }
+]
