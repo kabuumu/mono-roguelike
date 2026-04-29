@@ -58,5 +58,9 @@
   "item_bucket_water":  { "glyph": "u", "colorOverride": null },
   "item_log":           { "glyph": "=", "colorOverride": null },
   "item_plank":         { "glyph": "-", "colorOverride": null },
-  "item_axe":           { "glyph": "P", "colorOverride": null }
+  "item_axe":           { "glyph": "P", "colorOverride": null },
+
+  // Swamp tiles
+  "tile_swamp":         { "glyph": "~", "colorOverride": "#3B5A2B" },
+  "env_swamp_tree":     { "glyph": "T", "colorOverride": "#2A4A1A" }
 }

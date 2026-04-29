@@ -337,5 +337,23 @@
     "itemType":       "Armor",
     "defenseBonus":   5,
     "value":          45
+  },
+
+  // ── Swamp tiles ───────────────────────────────────────────────────────────
+  {
+    "id":             "tile_swamp",
+    "name":           "Swamp",
+    "spriteKey":      "tile_swamp",
+    "colorTint":      "#3B5A2B",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "env_swamp_tree",
+    "name":           "Swamp Tree",
+    "spriteKey":      "env_swamp_tree",
+    "colorTint":      "#2A4A1A",
+    "blocksMovement": true,
+    "isTile":         true
   }
 ]

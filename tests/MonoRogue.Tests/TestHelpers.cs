@@ -121,7 +121,8 @@ internal static class TestHelpers
             ImmutableDictionary<string, EntityTemplate>.Empty,
             ImmutableDictionary<string, BackgroundTemplate>.Empty,
             ImmutableDictionary<string, FactionTemplate>.Empty,
-            ImmutableDictionary<string, QuestTemplate>.Empty.Add(questId, quest));
+            ImmutableDictionary<string, QuestTemplate>.Empty.Add(questId, quest),
+            ImmutableDictionary<string, AreaTemplate>.Empty);
     }
 
     public static DataRegistry RegistryWithItemQuest(
@@ -143,7 +144,8 @@ internal static class TestHelpers
             ImmutableDictionary<string, EntityTemplate>.Empty,
             ImmutableDictionary<string, BackgroundTemplate>.Empty,
             ImmutableDictionary<string, FactionTemplate>.Empty,
-            ImmutableDictionary<string, QuestTemplate>.Empty.Add(questId, quest));
+            ImmutableDictionary<string, QuestTemplate>.Empty.Add(questId, quest),
+            ImmutableDictionary<string, AreaTemplate>.Empty);
     }
 
     /// <summary>Convenience: create an active Quest from a QuestTemplate.</summary>

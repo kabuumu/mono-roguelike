@@ -75,34 +75,45 @@ public sealed class AsciiRenderer
         int camX = Math.Clamp(playerPos.X - vpTileW / 2, 0, Math.Max(0, state.MapWidth  - vpTileW));
         int camY = Math.Clamp(playerPos.Y - vpTileH / 2, 0, Math.Max(0, state.MapHeight - vpTileH));
 
-        // Pass 1: tiles (explored dim, visible bright)
-        foreach (var entity in state.Entities.Values.Where(e => e.IsTile()))
+        // Single iteration with viewport culling: reject 99%+ of entities by position,
+        // then bucket the visible remainder into tiles vs non-tiles for correct draw order.
+        int camRight  = camX + vpTileW;
+        int camBottom = camY + vpTileH;
+        var visibleNonTiles = new List<Entity>();
+
+        // Pass 1: draw tiles immediately, collect non-tiles for pass 2
+        foreach (var entity in state.Entities.Values)
         {
             if (entity.Spatial is null) continue;
             var pos = entity.Spatial.Position;
-            if      (state.VisibleTiles.Contains(pos))   DrawEntity(entity, dim: false, camX, camY, vpW, vpH);
-            else if (state.ExploredTiles.Contains(pos))  DrawEntity(entity, dim: true,  camX, camY, vpW, vpH);
+
+            // Early viewport bounds rejection (cheapest check)
+            if (pos.X < camX || pos.X >= camRight || pos.Y < camY || pos.Y >= camBottom)
+                continue;
+
+            if (entity.IsTile())
+            {
+                if      (state.VisibleTiles.Contains(pos))  DrawEntity(entity, dim: false, camX, camY, vpW, vpH);
+                else if (state.ExploredTiles.Contains(pos)) DrawEntity(entity, dim: true,  camX, camY, vpW, vpH);
+            }
+            else if (state.VisibleTiles.Contains(pos))
+            {
+                visibleNonTiles.Add(entity);
+            }
         }
 
-        // Pass 1.5: interaction target highlights (under entities, above tiles)
+        // Interaction target highlights (under entities, above tiles)
         if (state.IsInteractionMenuOpen && state.InteractionTargets is { } itTargets)
         {
-            // Dim highlight on every candidate
             foreach (var choice in itTargets)
                 HighlightTile(choice.WorldPosition, camX, camY, vpW, vpH, new Color(60, 100, 180, 80));
-
-            // Bright highlight on the selected candidate
             var sel = itTargets[state.InteractionTargetIndex];
             HighlightTile(sel.WorldPosition, camX, camY, vpW, vpH, new Color(80, 160, 255, 160));
         }
 
-        // Pass 2: visible non-tile entities (creatures, items, NPCs)
-        foreach (var entity in state.Entities.Values.Where(e => !e.IsTile()))
-        {
-            if (entity.Spatial is null) continue;
-            if (!state.VisibleTiles.Contains(entity.Spatial.Position)) continue;
+        // Pass 2: non-tile entities on top
+        foreach (var entity in visibleNonTiles)
             DrawEntity(entity, dim: false, camX, camY, vpW, vpH);
-        }
 
         // Pass 3: HUD bar
         DrawHud(state, vpW, vpH);
@@ -177,7 +188,9 @@ public sealed class AsciiRenderer
               100, 6, new Color(180, 180, 255));
         Print($"ATK {effAtk}  DEF {effDef}",
               280, 6, new Color(220, 220, 140));
-        Print($"Floor {state.FloorLevel}   Turn {state.TurnNumber}",
+
+        var floorText = state.FloorLevel == 0 ? "Overworld" : $"Floor {state.FloorLevel}";
+        Print($"{floorText}   Turn {state.TurnNumber}",
               430, 6, HudTextColor);
 
         var weapName  = EquippedName(state, player.Equipment?.WeaponId);

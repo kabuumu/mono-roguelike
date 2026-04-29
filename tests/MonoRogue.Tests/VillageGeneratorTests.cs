@@ -53,7 +53,8 @@ public sealed class VillageGeneratorTests
             templates,
             ImmutableDictionary<string, BackgroundTemplate>.Empty,
             ImmutableDictionary<string, FactionTemplate>.Empty,
-            ImmutableDictionary<string, QuestTemplate>.Empty);
+            ImmutableDictionary<string, QuestTemplate>.Empty,
+            ImmutableDictionary<string, AreaTemplate>.Empty);
     }
 
     // Thin wrapper around the public placement logic.

@@ -440,35 +440,23 @@ public sealed class MonoRogueGame : Game
 
     // ── World builders ────────────────────────────────────────────────────────
 
-    /// <summary>Generates the starting village (floor 0 / intro area).</summary>
+    /// <summary>Generates the starting world (village at centre + surrounding biomes).</summary>
     private GameState BuildVillage()
     {
         var freshPlayer = CreateFreshPlayer();
-        var villageParams = new VillageGenParams(
+        var worldParams = new WorldGenParams(
             Seed:                _rng.Split(0).Seed,
-            MapWidth:            _mapWidth  * 2,
-            MapHeight:           _mapHeight * 2,
+            ViewportWidth:       _mapWidth,
+            ViewportHeight:      _mapHeight,
+            VillageWidthMul:     2.0f,
+            VillageHeightMul:    2.0f,
             TargetBuildingCount: 10,
             MinBuildingSize:     4,
             MaxBuildingSize:     6,
             GuaranteedNearCount: 4,
             NearZoneRadius:      14
         );
-        var state = VillageGenerator.Generate(villageParams, _registry, "background_blacksmith_child", freshPlayer);
-
-        // Initial FOV — village is fully pre-explored (players know their own village)
-        var player = state.Entities[state.PlayerEntityId];
-        if (player.Spatial != null)
-        {
-            var vis = FovSystem.Compute(state, player.Spatial.Position, 10);
-            var allTilePositions = state.Entities.Values
-                .Where(e => e.IsTile() && e.Spatial is not null)
-                .Select(e => e.Spatial!.Position)
-                .ToImmutableHashSet();
-            return state with { VisibleTiles = vis, ExploredTiles = allTilePositions };
-        }
-
-        return state;
+        return WorldGenerator.Generate(worldParams, _registry, "background_blacksmith_child", freshPlayer);
     }
 
     /// <summary>Generates a dungeon floor (floors 1+), preserving player state.</summary>

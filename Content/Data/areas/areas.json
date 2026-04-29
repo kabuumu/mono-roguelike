@@ -1,0 +1,90 @@
+[
+  {
+    "id": "forest",
+    "name": "Darkwood Forest",
+    "direction": "north",
+    "generatorType": "wilderness",
+    "mapWidthMultiplier": 1.5,
+    "mapHeightMultiplier": 1.5,
+    "baseTile": "tile_grass",
+    "wallTile": "env_tree",
+    "wallDensity": 0.35,
+    "clearingCount": [3, 6],
+    "clearingSize": [5, 12],
+    "enemies": [
+      { "templateId": "creature_wolf", "count": [4, 8] },
+      { "templateId": "creature_boar", "count": [2, 5] }
+    ],
+    "items": [
+      { "templateId": "item_health_potion", "chance": 0.3 },
+      { "templateId": "item_wolf_pelt", "chance": 0.2 }
+    ],
+    "npcs": [],
+    "entryMessage": "You enter the Darkwood Forest. The trees loom overhead."
+  },
+  {
+    "id": "cave",
+    "name": "Crystal Caverns",
+    "direction": "east",
+    "generatorType": "dungeon",
+    "mapWidthMultiplier": 1.0,
+    "mapHeightMultiplier": 1.0,
+    "baseTile": "tile_floor",
+    "wallTile": "tile_wall",
+    "enemies": [
+      { "templateId": "creature_goblin", "count": [3, 7] },
+      { "templateId": "creature_rat", "count": [4, 8] }
+    ],
+    "items": [
+      { "templateId": "item_health_potion", "chance": 0.4 },
+      { "templateId": "item_sword", "chance": 0.15 }
+    ],
+    "npcs": [],
+    "entryMessage": "You descend into the Crystal Caverns."
+  },
+  {
+    "id": "ruins",
+    "name": "Ancient Ruins",
+    "direction": "south",
+    "generatorType": "dungeon",
+    "mapWidthMultiplier": 1.2,
+    "mapHeightMultiplier": 1.2,
+    "baseTile": "tile_cobblestone",
+    "wallTile": "tile_wall",
+    "enemies": [
+      { "templateId": "creature_orc", "count": [2, 5] },
+      { "templateId": "creature_goblin", "count": [3, 6] }
+    ],
+    "items": [
+      { "templateId": "item_health_potion", "chance": 0.3 },
+      { "templateId": "item_leather_armor", "chance": 0.1 },
+      { "templateId": "item_dagger", "chance": 0.15 }
+    ],
+    "npcs": [
+      { "templateId": "npc_trader", "count": [0, 1] }
+    ],
+    "entryMessage": "Crumbling stone pillars mark the entrance to the Ancient Ruins."
+  },
+  {
+    "id": "swamp",
+    "name": "Fetid Swamp",
+    "direction": "west",
+    "generatorType": "wilderness",
+    "mapWidthMultiplier": 1.5,
+    "mapHeightMultiplier": 1.5,
+    "baseTile": "tile_swamp",
+    "wallTile": "env_swamp_tree",
+    "wallDensity": 0.25,
+    "clearingCount": [2, 4],
+    "clearingSize": [4, 8],
+    "enemies": [
+      { "templateId": "creature_rat", "count": [5, 10] },
+      { "templateId": "creature_troll", "count": [1, 2] }
+    ],
+    "items": [
+      { "templateId": "item_health_potion", "chance": 0.4 }
+    ],
+    "npcs": [],
+    "entryMessage": "The air turns thick and humid as you wade into the Fetid Swamp."
+  }
+]

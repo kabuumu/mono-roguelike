@@ -18,6 +18,8 @@ using MonoRogue.Core;
 /// </summary>
 public static class EnemyAiSystem
 {
+    private const int ActivationRadius = 30;
+
     private static readonly Position[] CardinalDirs =
         [Position.North, Position.South, Position.East, Position.West];
 
@@ -34,9 +36,16 @@ public static class EnemyAiSystem
         foreach (var entity in state.Entities.Values)
         {
             if (entity.Ai is null || entity.Spatial is null) continue;
-            if (!entity.IsAlive()) continue;
 
             var pos = entity.Spatial.Position;
+
+            // Skip entities far from the player — they don't need AI ticks.
+            // This avoids processing thousands of distant enemies on the large world map.
+            int dx = Math.Abs(pos.X - playerPos.X);
+            int dy = Math.Abs(pos.Y - playerPos.Y);
+            if (dx > ActivationRadius || dy > ActivationRadius) continue;
+
+            if (!entity.IsAlive()) continue;
 
             // Enemies wake up when the player can see them
             bool alertToPlayer = state.VisibleTiles.Contains(pos);

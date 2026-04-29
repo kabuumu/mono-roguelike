@@ -12,7 +12,8 @@ public sealed record DataRegistry(
     ImmutableDictionary<string, EntityTemplate> Templates,
     ImmutableDictionary<string, BackgroundTemplate> Backgrounds,
     ImmutableDictionary<string, FactionTemplate> Factions,
-    ImmutableDictionary<string, QuestTemplate> Quests
+    ImmutableDictionary<string, QuestTemplate> Quests,
+    ImmutableDictionary<string, AreaTemplate> Areas
 )
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -32,6 +33,7 @@ public sealed record DataRegistry(
         var backgrounds = new Dictionary<string, BackgroundTemplate>();
         var factions = new Dictionary<string, FactionTemplate>();
         var quests = new Dictionary<string, QuestTemplate>();
+        var areas = new Dictionary<string, AreaTemplate>();
 
         // Load blueprints (entities)
         var blueprintFiles = Directory.GetFiles(directoryPath, "blueprint*.json", SearchOption.AllDirectories);
@@ -69,11 +71,21 @@ public sealed record DataRegistry(
             foreach (var q in qs) quests[q.Id] = q;
         }
 
+        // Load areas
+        var areaFiles = Directory.GetFiles(directoryPath, "area*.json", SearchOption.AllDirectories);
+        foreach (var file in areaFiles)
+        {
+            var json = File.ReadAllText(file);
+            var areaList = JsonSerializer.Deserialize<List<AreaTemplate>>(json, JsonOptions) ?? [];
+            foreach (var a in areaList) areas[a.Id] = a;
+        }
+
         return new DataRegistry(
             entities.ToImmutableDictionary(),
             backgrounds.ToImmutableDictionary(),
             factions.ToImmutableDictionary(),
-            quests.ToImmutableDictionary()
+            quests.ToImmutableDictionary(),
+            areas.ToImmutableDictionary()
         );
     }
 
@@ -82,5 +94,6 @@ public sealed record DataRegistry(
         new(ImmutableDictionary<string, EntityTemplate>.Empty,
             ImmutableDictionary<string, BackgroundTemplate>.Empty,
             ImmutableDictionary<string, FactionTemplate>.Empty,
-            ImmutableDictionary<string, QuestTemplate>.Empty);
+            ImmutableDictionary<string, QuestTemplate>.Empty,
+            ImmutableDictionary<string, AreaTemplate>.Empty);
 }
