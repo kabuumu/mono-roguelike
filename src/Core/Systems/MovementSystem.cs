@@ -34,6 +34,19 @@ public static class MovementSystem
             // Guard: out of bounds
             if (!state.InBounds(target)) continue;
 
+            // Player bumps a closed door → open it (costs the turn, no movement)
+            if (mover.IsPlayer())
+            {
+                var door = state.EntitiesAt(target)
+                    .FirstOrDefault(e => e.Identity?.TemplateId == "tile_door_closed");
+                if (door is not null)
+                {
+                    events.Add(new DoorOpenedEvent(door.Id));
+                    events.Add(new MessageLoggedEvent("You open the door."));
+                    continue;
+                }
+            }
+
             // Guard: static blocking tile (wall)
             if (!state.IsWalkable(target)) continue;
 

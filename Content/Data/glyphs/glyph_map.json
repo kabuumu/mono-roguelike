@@ -3,6 +3,7 @@
   "tile_floor":         { "glyph": ".", "colorOverride": null },
   "tile_wall":          { "glyph": "#", "colorOverride": null },
   "tile_door_closed":   { "glyph": "+", "colorOverride": "#AA7733" },
+  "tile_door_open":     { "glyph": "'", "colorOverride": "#AA7733" },
   "tile_stairs_down":   { "glyph": ">", "colorOverride": "#FFDD88" },
 
   // Creatures
@@ -49,7 +50,10 @@
   "env_river":          { "glyph": "~", "colorOverride": null },
   "env_tree":           { "glyph": "T", "colorOverride": null },
   "npc_blacksmith":     { "glyph": "B", "colorOverride": null },
+  "npc_herbalist":      { "glyph": "h", "colorOverride": "#88CC88" },
+  "npc_trader":         { "glyph": "t", "colorOverride": "#DDAA44" },
   "npc_villager":       { "glyph": "v", "colorOverride": null },
+  "item_bandage":       { "glyph": "%", "colorOverride": "#EEEECC" },
   "item_bucket":        { "glyph": "u", "colorOverride": null },
   "item_bucket_water":  { "glyph": "u", "colorOverride": null },
   "item_log":           { "glyph": "=", "colorOverride": null },

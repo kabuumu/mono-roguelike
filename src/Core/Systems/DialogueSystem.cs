@@ -82,7 +82,8 @@ public static class DialogueSystem
                     new DialogueOpenedEvent(
                         npc.Id,
                         npc.Identity?.Name ?? "Stranger",
-                        lines)
+                        lines,
+                        npc.Dialogue.Options)
                 ];
             }
         }
@@ -102,7 +103,7 @@ public static class DialogueSystem
             if (!state.Entities.TryGetValue(evt.NpcId, out var npc)) continue;
             if (npc.Dialogue is null) continue;
             var lines = GetDialogueLines(state, npc.Dialogue);
-            result.Add(new DialogueOpenedEvent(npc.Id, npc.Identity?.Name ?? "Stranger", lines));
+            result.Add(new DialogueOpenedEvent(npc.Id, npc.Identity?.Name ?? "Stranger", lines, npc.Dialogue.Options));
         }
         return result.ToImmutable();
     }

@@ -83,7 +83,12 @@ public static class SpawnSystem
                                  t.DialogPool.ToImmutableDictionary(
                                      kvp => kvp.Key,
                                      kvp => kvp.Value.ToImmutableArray()),
-                                 t.DialogPool.Keys.ToImmutableArray())
+                                 t.DialogPool.Keys.ToImmutableArray(),
+                                 t.DialogOptions?.Length > 0
+                                     ? t.DialogOptions
+                                           .Select(o => new DialogueOption(o.Id, o.Label, o.Action))
+                                           .ToImmutableArray()
+                                     : ImmutableArray<DialogueOption>.Empty)
                              : null,
             Peaceful:    t.IsPeaceful ? new PeacefulTag() : null
         );

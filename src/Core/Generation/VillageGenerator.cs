@@ -108,12 +108,18 @@ public static class VillageGenerator
         foreach (var rect in buildings)
             StampBuilding(rect, SpawnAt, buildingRng);
 
-        // ── 4. One villager per building ──────────────────────────────────────
-        foreach (var rect in buildings)
+        // ── 4b. One NPC per building: traders first, then villagers ──────────────
+        // Trader template IDs live in JSON blueprints; the generator only decides
+        // placement order.  First N buildings get a named trader; the rest get a
+        // generic villager.
+        string[] traderPool = ["npc_herbalist", "npc_trader"];
+        for (int i = 0; i < buildings.Count; i++)
         {
+            var rect = buildings[i];
+            string npcTemplate = i < traderPool.Length ? traderPool[i] : "npc_villager";
             int vx = villagerRng.Next(rect.X + 1, rect.X + rect.Width  - 1);
             int vy = villagerRng.Next(rect.Y + 1, rect.Y + rect.Height - 1);
-            SpawnAt("npc_villager", vx, vy);
+            SpawnAt(npcTemplate, vx, vy);
         }
 
         // ── 5. Wilderness: forest perimeter + creature spawns ─────────────────
@@ -381,11 +387,11 @@ public static class VillageGenerator
             if (buildings.Any(b => x >= b.X && x < b.X + b.Width
                                 && y >= b.Y && y < b.Y + b.Height)) continue;
 
-            // Hash-based noise (~40% tree density in wilderness)
+            // Hash-based noise (~20% tree density in wilderness)
             int   hash  = HashCode.Combine(x, y, seed, 0x57A1_F3B2);
             float noise = (((hash % 100) + 100) % 100) / 100f;
 
-            if (noise < 0.40f)
+            if (noise < 0.20f)
             {
                 // Place tree; mark tile as blocking
                 if (!registry.Templates.TryGetValue("env_tree", out var treeTpl)) continue;

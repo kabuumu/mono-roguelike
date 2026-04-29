@@ -115,7 +115,11 @@ public sealed class AsciiRenderer
         if (state.IsInventoryOpen)
             DrawInventoryBox(state, vpW, vpH, state.InventorySelectedIndex);
 
-        // Pass 6: interaction context panel (small, non-blocking)
+        // Pass 6: barter box
+        if (state.IsBarterOpen)
+            DrawBarterBox(state, vpW, vpH);
+
+        // Pass 7: interaction context panel (small, non-blocking)
         if (state.IsInteractionMenuOpen)
             DrawInteractionContext(state, vpW, vpH);
 
@@ -202,34 +206,133 @@ public sealed class AsciiRenderer
 
     private void DrawDialogueBox(DialogueState dlg, int vpW, int vpH)
     {
-        const int boxH   = 130;
-        const int margin = 30;
-        int boxY  = vpH - boxH - 10;
-        int boxW  = vpW - margin * 2;
+        const int margin     = 30;
+        const int lineH      = TileH + 2;   // 22 px per wrapped text line
+        const int maxMsgLine = 3;
+        const int textTop    = 40;
+        const int textBottom = textTop + maxMsgLine * lineH;   // 106
+        const int optSepY    = textBottom + 6;                  // 112
+        const int optStartY  = optSepY + 12;                    // 124
+
+        int boxW   = vpW - margin * 2;
         int innerX = margin + 12;
 
-        // Background panel
-        DrawRect(margin, boxY,     boxW, boxH,   new Color(8,  16, 32,  240));
-        DrawRect(margin, boxY,     boxW, 2,      new Color(100, 140, 200, 220)); // top border
-        DrawRect(margin, boxY + boxH - 2, boxW, 2, new Color(100, 140, 200, 220)); // bottom
+        // Box height is fixed for the entire conversation so it never resizes mid-dialogue.
+        int boxH = dlg.HasOptions
+            ? optStartY + dlg.Options.Length * 28 + 34
+            : 130;
+        int boxY = vpH - boxH - 10;
 
-        // NPC name
+        // ── Chrome ────────────────────────────────────────────────────────────
+        DrawRect(margin, boxY,            boxW, boxH, new Color(8, 16, 32, 240));
+        DrawRect(margin, boxY,            boxW, 2,    new Color(100, 140, 200, 220));
+        DrawRect(margin, boxY + boxH - 2, boxW, 2,    new Color(100, 140, 200, 220));
+
+        // ── NPC name + separator ──────────────────────────────────────────────
         Print(dlg.NpcName, innerX, boxY + 10, new Color(255, 220, 100));
-
-        // Separator line
         DrawRect(innerX, boxY + 32, boxW - 24, 1, new Color(80, 100, 140, 180));
 
-        // Dialogue text (word-wrapped)
-        var lines = WrapText(dlg.CurrentText, boxW - 28);
-        for (int i = 0; i < Math.Min(lines.Length, 3); i++)
-            Print(lines[i], innerX, boxY + 40 + i * (TileH + 2), new Color(220, 220, 200));
+        // ── Current message ───────────────────────────────────────────────────
+        var wrapped = WrapText(dlg.CurrentText, boxW - 28);
+        for (int i = 0; i < Math.Min(wrapped.Length, maxMsgLine); i++)
+            Print(wrapped[i], innerX, boxY + textTop + i * lineH, new Color(220, 220, 200));
 
-        // Page indicator and hint
-        var pageStr = $"[{dlg.CurrentLine + 1}/{dlg.Lines.Length}]";
-        var hintStr = dlg.IsLastLine ? "[SPACE] Close" : "[SPACE] Next";
-        var hintW   = (int)_font.MeasureString(hintStr).X;
-        Print(pageStr, innerX, boxY + boxH - 24, new Color(120, 120, 140));
-        Print(hintStr, margin + boxW - hintW - 12, boxY + boxH - 24, new Color(160, 200, 160));
+        // ── Footer: options on last line, page counter otherwise ──────────────
+        if (dlg.ShowingOptions)
+        {
+            DrawRect(innerX, boxY + optSepY, boxW - 24, 1, new Color(80, 100, 140, 180));
+
+            for (int i = 0; i < dlg.Options.Length; i++)
+            {
+                int  lineY    = boxY + optStartY + i * 28;
+                bool selected = i == dlg.SelectedOption;
+                if (selected)
+                {
+                    DrawRect(margin + 4, lineY - 3, boxW - 8, 24, new Color(40, 70, 120, 180));
+                    Print($"> {dlg.Options[i].Label}", innerX - 4, lineY, new Color(180, 220, 255));
+                }
+                else
+                {
+                    Print($"  {dlg.Options[i].Label}", innerX, lineY, new Color(200, 200, 180));
+                }
+            }
+
+            Print("[Up/Down] Select   [SPACE] Choose",
+                  innerX, boxY + boxH - 24, new Color(120, 120, 140));
+        }
+        else
+        {
+            var pageStr = $"[{dlg.CurrentLine + 1}/{dlg.Lines.Length}]";
+            var hintStr = dlg.IsLastLine ? "[SPACE] Close" : "[SPACE] Next";
+            var hintW   = (int)_font.MeasureString(hintStr).X;
+            Print(pageStr, innerX, boxY + boxH - 24, new Color(120, 120, 140));
+            Print(hintStr, margin + boxW - hintW - 12, boxY + boxH - 24, new Color(160, 200, 160));
+        }
+    }
+
+    // ── Barter box ────────────────────────────────────────────────────────────
+
+    private void DrawBarterBox(GameState state, int vpW, int vpH)
+    {
+        var barter = state.ActiveBarter!;
+        if (!state.Entities.TryGetValue(barter.NpcId, out var trader)) return;
+
+        const int boxW = 440;
+        const int boxH = 400;
+        int boxX   = (vpW - boxW) / 2;
+        int boxY   = (vpH - boxH) / 2;
+        int innerX = boxX + 24;
+
+        DrawRect(0, 0, vpW, vpH, new Color(0, 0, 0, 160));
+        DrawRect(boxX, boxY,            boxW, boxH, new Color(16, 24, 32, 240));
+        DrawRect(boxX, boxY,            boxW, 2,    new Color(200, 140, 100, 220));
+        DrawRect(boxX, boxY + boxH - 2, boxW, 2,    new Color(200, 140, 100, 220));
+
+        CentreText($"WARES - {barter.NpcName.ToUpper()}",
+                   boxX + boxW / 2f, boxY + 24, new Color(255, 200, 100));
+        DrawRect(innerX, boxY + 44, boxW - 48, 1, new Color(80, 100, 140, 180));
+
+        var player = state.TryGetPlayer();
+        int drawY  = boxY + 56;
+        Print($"Your gold: {player?.Inventory?.Gold ?? 0}g",
+              innerX, drawY, new Color(240, 220, 100));
+        drawY += 28;
+        DrawRect(innerX, drawY, boxW - 48, 1, new Color(60, 70, 90, 140));
+        drawY += 12;
+
+        var items = trader.Inventory?.Items ?? [];
+        if (items.IsEmpty)
+        {
+            Print("  (Nothing for sale)", innerX, drawY, new Color(120, 120, 120));
+        }
+        else
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (!state.Entities.TryGetValue(items[i], out var item)) continue;
+                var  name     = item.Identity?.Name ?? "Item";
+                var  price    = item.Item?.Value ?? 0;
+                bool sel      = i == barter.SelectedIndex;
+                var  priceStr = $"{price}g";
+                var  priceW   = (int)_font.MeasureString(priceStr).X;
+
+                if (sel)
+                {
+                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 24, new Color(80, 120, 60, 180));
+                    Print($"> {name}", innerX - 4, drawY, new Color(180, 255, 140));
+                    Print(priceStr, boxX + boxW - priceW - 24, drawY, new Color(240, 220, 100));
+                }
+                else
+                {
+                    Print($"  {name}", innerX, drawY, new Color(220, 220, 220));
+                    Print(priceStr, boxX + boxW - priceW - 24, drawY, new Color(180, 160, 80));
+                }
+                drawY += 26;
+            }
+        }
+
+        Print("[Up/Down] Select   [Enter] Buy   [Esc] Close",
+              boxX + 8, boxY + boxH - 24, new Color(140, 140, 140));
     }
 
     // ── Inventory box ────────────────────────────────────────────────────────

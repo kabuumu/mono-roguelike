@@ -63,7 +63,94 @@
         "Welcome to the forge. I buy pelts and tusks - sell me what you find.",
         "Need gear? I've got axes, armour, and potions. Gold talks."
       ]
-    }
+    },
+    "dialogOptions": [
+      { "id": "barter",   "label": "What have you got for sale?", "action": "open_shop" },
+      { "id": "farewell", "label": "Farewell.",                   "action": "close"     }
+    ]
+  },
+  {
+    "id": "item_bandage",
+    "name": "Linen Bandage",
+    "spriteKey": "item_bandage",
+    "colorTint": "#EEEECC",
+    "isItem": true,
+    "itemType": "Consumable",
+    "healAmount": 8,
+    "value": 5
+  },
+  {
+    "id": "npc_herbalist",
+    "name": "Wren the Herbalist",
+    "spriteKey": "npc_herbalist",
+    "colorTint": "#88CC88",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 15,
+    "startingGold": 40,
+    "shopInventory": [
+      "item_health_potion",
+      "item_health_potion",
+      "item_bandage",
+      "item_bandage",
+      "item_bandage"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_cull_wolves": [
+        "Fewer wolves means I can gather herbs without watching my back.",
+        "My stock is fuller for it. Come see me when you need patching up."
+      ],
+      "requires_background:background_blacksmith_child": [
+        "Your father used to send metal scraps my way for the herb press.",
+        "I've kept a few bandages aside for his family. Take what you need."
+      ],
+      "default": [
+        "Potions and bandages - everything you need to keep breathing out there.",
+        "The wilderness takes a toll. Come back in one piece and I'll keep you patched up."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "barter",   "label": "What do you have?", "action": "open_shop" },
+      { "id": "farewell", "label": "Farewell.",         "action": "close"     }
+    ]
+  },
+  {
+    "id": "npc_trader",
+    "name": "Voss the Trader",
+    "spriteKey": "npc_trader",
+    "colorTint": "#DDAA44",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 20,
+    "startingGold": 100,
+    "shopInventory": [
+      "item_dagger",
+      "item_sword",
+      "item_shield",
+      "item_chainmail"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_cull_wolves": [
+        "With those wolves gone the trade roads might open up again.",
+        "I'll have more stock coming in soon. Buy what I've got for now."
+      ],
+      "requires_background:background_blacksmith_child": [
+        "The blacksmith's own kid. Your father kept my cart rolling more than once.",
+        "Good steel for a fair price - that's how we do business."
+      ],
+      "default": [
+        "Blades, shields, and mail - everything the well-prepared adventurer carries.",
+        "I buy quality gear too. Find something good out there, bring it back."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "barter",   "label": "Show me your wares.", "action": "open_shop" },
+      { "id": "farewell", "label": "Farewell.",           "action": "close"     }
+    ]
   },
   {
     "id": "npc_villager",

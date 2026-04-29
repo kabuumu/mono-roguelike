@@ -28,6 +28,7 @@ public static class Reducer
             state = evt switch
             {
                 MovedEvent            moved   => ApplyMoved(state,   moved),
+                DoorOpenedEvent       door    => ApplyDoorOpened(state, door),
                 SpawnedEvent          spawned => ApplySpawned(state, spawned),
                 DamagedEvent          damaged => ApplyDamaged(state, damaged),
                 DiedEvent             died    => ApplyDied(state,    died),
@@ -48,7 +49,8 @@ public static class Reducer
                 DialogueOpenedEvent opened  => state with
                 {
                     ActiveDialogue = new DialogueState(
-                        opened.NpcId, opened.NpcName, opened.Lines)
+                        opened.NpcId, opened.NpcName, opened.Lines,
+                        Options: opened.Options)
                 },
                 DialogueAdvancedEvent => ApplyDialogueAdvanced(state),
                 DialogueClosedEvent   => state with { ActiveDialogue = null },
@@ -69,6 +71,22 @@ public static class Reducer
     }
 
     // ── Movement ──────────────────────────────────────────────────────────────
+
+    private static GameState ApplyDoorOpened(GameState state, DoorOpenedEvent evt)
+    {
+        if (!state.Entities.TryGetValue(evt.DoorEntityId, out var door)) return state;
+        if (door.Spatial is null) return state;
+
+        var opened = door with
+        {
+            Spatial  = door.Spatial  with { BlocksMovement = false },
+            Render   = door.Render   is not null ? door.Render   with { SpriteKey = "tile_door_open" } : null,
+            Identity = door.Identity is not null ? door.Identity with { TemplateId = "tile_door_open", Name = "Open Door" } : null,
+        };
+
+        var next = state.WithTileOpen(door.Spatial.Position);
+        return next with { Entities = next.Entities.SetItem(evt.DoorEntityId, opened) };
+    }
 
     private static GameState ApplyMoved(GameState state, MovedEvent evt)
     {

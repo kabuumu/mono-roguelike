@@ -126,9 +126,13 @@ public sealed record AiComponent(AiState State = AiState.Wander, string Faction 
 ///   requires_background:{backgroundId} — matches when player has that background
 ///   default                           — always matches
 /// </summary>
+/// <summary>A selectable choice presented to the player at the end of dialogue.</summary>
+public sealed record DialogueOption(string Id, string Label, string Action);
+
 public sealed record DialogueComponent(
     ImmutableDictionary<string, ImmutableArray<string>> DialogPool,
-    ImmutableArray<string> KeyOrder
+    ImmutableArray<string>                              KeyOrder,
+    ImmutableArray<DialogueOption>                      Options = default
 );
 
 // ─────────────────────────────────────────────────

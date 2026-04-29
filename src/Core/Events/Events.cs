@@ -15,6 +15,9 @@ public abstract record GameEvent;
 
 public sealed record MovedEvent(Guid EntityId, Position NewPosition) : GameEvent;
 
+/// <summary>Player opened a door tile — it becomes passable and its glyph changes.</summary>
+public sealed record DoorOpenedEvent(Guid DoorEntityId) : GameEvent;
+
 // ── Spawning ─────────────────────────────────────────────────────────────────
 
 public sealed record SpawnedEvent(Entity NewEntity, bool IsPlayer = false) : GameEvent;
@@ -79,9 +82,10 @@ public sealed record NpcBumpedEvent(Guid NpcId) : GameEvent;
 
 /// <summary>A conversation with an NPC has started.</summary>
 public sealed record DialogueOpenedEvent(
-    Guid                   NpcId,
-    string                 NpcName,
-    ImmutableArray<string> Lines
+    Guid                           NpcId,
+    string                         NpcName,
+    ImmutableArray<string>         Lines,
+    ImmutableArray<DialogueOption> Options = default
 ) : GameEvent;
 
 /// <summary>Player pressed advance — current line index incremented (or dialogue closed).</summary>

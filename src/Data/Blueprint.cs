@@ -44,7 +44,16 @@ public sealed record EntityTemplate(
     bool     HasDialogue    = false,
     bool     IsPeaceful     = false,
     string[] DialogueLines  = null!,
-    Dictionary<string, string[]> DialogPool = null!
+    Dictionary<string, string[]> DialogPool = null!,
+    // Dialogue options shown after all lines are read (null = auto-close)
+    DialogOptionTemplate[]? DialogOptions = null
+);
+
+/// <summary>A selectable option shown at the end of an NPC's dialogue (JSON template form).</summary>
+public sealed record DialogOptionTemplate(
+    string Id,
+    string Label,
+    string Action   // "close" | "open_shop"
 );
 
 /// <summary>One entry in a creature's loot table.</summary>

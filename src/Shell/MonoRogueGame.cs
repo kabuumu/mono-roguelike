@@ -94,6 +94,11 @@ public sealed class MonoRogueGame : Game
                 _state = _state with { InteractionTargets = null, InteractionTargetIndex = 0 };
                 base.Update(gameTime); return;
             }
+            if (_state.IsBarterOpen)
+            {
+                _state = _state with { ActiveBarter = null };
+                base.Update(gameTime); return;
+            }
             if (_state.IsInventoryOpen)
             {
                 _state = _state with { IsInventoryOpen = false };
@@ -204,6 +209,74 @@ public sealed class MonoRogueGame : Game
                 base.Update(gameTime); return;
             }
             // Inventory is open — swallow all other input so the world doesn't move
+            base.Update(gameTime); return;
+        }
+
+        // ── Dialogue options navigation ───────────────────────────────────────
+        if (_state.ActiveDialogue?.ShowingOptions == true)
+        {
+            var dlg = _state.ActiveDialogue;
+            if (_input.WasPressed(Keys.Up) || _input.WasPressed(Keys.K))
+            {
+                _state = _state with { ActiveDialogue = dlg with { SelectedOption = Math.Max(0, dlg.SelectedOption - 1) } };
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Down) || _input.WasPressed(Keys.J))
+            {
+                _state = _state with { ActiveDialogue = dlg with { SelectedOption = Math.Min(dlg.Options.Length - 1, dlg.SelectedOption + 1) } };
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Enter) || _input.WasPressed(Keys.Space) || _input.WasPressed(Keys.T))
+            {
+                ExecuteOption(dlg.Options[dlg.SelectedOption], dlg.NpcId, dlg.NpcName);
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Escape))
+            {
+                _state = _state with { ActiveDialogue = null };
+                base.Update(gameTime); return;
+            }
+            base.Update(gameTime); return;
+        }
+
+        // ── Barter screen navigation ──────────────────────────────────────────
+        if (_state.IsBarterOpen)
+        {
+            var barter = _state.ActiveBarter!;
+            _state.Entities.TryGetValue(barter.NpcId, out var traderEnt);
+            int itemCount = traderEnt?.Inventory?.Items.Length ?? 0;
+
+            if (_input.WasPressed(Keys.Up) || _input.WasPressed(Keys.K))
+            {
+                _state = _state with { ActiveBarter = barter with { SelectedIndex = Math.Max(0, barter.SelectedIndex - 1) } };
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Down) || _input.WasPressed(Keys.J))
+            {
+                _state = _state with { ActiveBarter = barter with { SelectedIndex = Math.Min(Math.Max(0, itemCount - 1), barter.SelectedIndex + 1) } };
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Enter) && itemCount > 0 && barter.SelectedIndex < itemCount)
+            {
+                var itemId  = traderEnt!.Inventory!.Items[barter.SelectedIndex];
+                int prevIdx = barter.SelectedIndex;
+                ExecutePlayerIntent(new TradeIntent(_state.PlayerEntityId, barter.NpcId, itemId));
+                // Clamp selection after item was removed from trader's inventory
+                if (_state.IsBarterOpen)
+                {
+                    int newCount = _state.Entities.TryGetValue(barter.NpcId, out var nt)
+                        ? nt.Inventory?.Items.Length ?? 0 : 0;
+                    _state = newCount > 0
+                        ? _state with { ActiveBarter = _state.ActiveBarter! with { SelectedIndex = Math.Min(prevIdx, newCount - 1) } }
+                        : _state with { ActiveBarter = null };
+                }
+                base.Update(gameTime); return;
+            }
+            if (_input.WasPressed(Keys.Escape))
+            {
+                _state = _state with { ActiveBarter = null };
+                base.Update(gameTime); return;
+            }
             base.Update(gameTime); return;
         }
 
@@ -450,6 +523,17 @@ public sealed class MonoRogueGame : Game
 
         var vis = FovSystem.Compute(state, dungeon.PlayerSpawn, 10);
         return state with { VisibleTiles = vis, ExploredTiles = vis };
+    }
+
+    private void ExecuteOption(Core.Model.DialogueOption option, Guid npcId, string npcName)
+    {
+        _state = _state with { ActiveDialogue = null };
+        switch (option.Action)
+        {
+            case "open_shop":
+                _state = _state with { ActiveBarter = new BarterState(npcId, npcName) };
+                break;
+        }
     }
 
     private Entity CreateFreshPlayer() => new(

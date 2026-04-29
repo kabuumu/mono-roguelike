@@ -45,7 +45,9 @@ public sealed record GameState(
     /// </summary>
     ImmutableList<InteractionChoice>? InteractionTargets = null,
     /// <summary>Selected row index in the interaction choice menu.</summary>
-    int InteractionTargetIndex = 0
+    int InteractionTargetIndex = 0,
+    /// <summary>Non-null when the barter screen is open.</summary>
+    BarterState? ActiveBarter = null
 )
 {
     // ── Factory ────────────────────────────────────────────────────────────
@@ -114,6 +116,7 @@ public sealed record GameState(
 
     // ── Interaction menu helper ──────────────────────────────────────────────
     public bool IsInteractionMenuOpen => InteractionTargets is not null;
+    public bool IsBarterOpen          => ActiveBarter       is not null;
 }
 
 /// <summary>One option shown in the "Interact With" selection — carries world position for map highlighting.</summary>
