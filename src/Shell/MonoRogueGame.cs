@@ -69,7 +69,7 @@ public sealed class MonoRogueGame : Game
         _glyphMap      = GlyphMap.LoadFrom(Path.Combine(contentDir, "glyphs", "glyph_map.json"));
 
         _input    = new InputHandler();
-        _renderer = new AsciiRenderer(_spriteBatch, _font, _glyphMap, GraphicsDevice);
+        _renderer = new AsciiRenderer(_spriteBatch, _font, _glyphMap, GraphicsDevice, _registry);
 
         // Map fills the display, minus the HUD strip at the top
         var vp     = GraphicsDevice.Viewport;
@@ -88,8 +88,11 @@ public sealed class MonoRogueGame : Game
 
         // ── Escape: close menus in order of priority ──────────────────────────
         if (_input.WasPressed(Keys.Escape))
-        {
-            if (_state.IsInteractionMenuOpen)
+        {            if (_state.IsCharacterScreenOpen)
+            {
+                _state = _state with { IsCharacterScreenOpen = false };
+                base.Update(gameTime); return;
+            }            if (_state.IsInteractionMenuOpen)
             {
                 _state = _state with { InteractionTargets = null, InteractionTargetIndex = 0 };
                 base.Update(gameTime); return;
@@ -146,6 +149,18 @@ public sealed class MonoRogueGame : Game
             _state = _state with { IsInventoryOpen = !_state.IsInventoryOpen, InventorySelectedIndex = 0 };
             base.Update(gameTime); return;
         }
+
+        // Toggle character screen with P (only when no other menu is open)
+        if (_input.WasPressed(Keys.P) && _state.PlayerEntityId != Guid.Empty
+            && !_state.InDialogue && !_state.IsInteractionMenuOpen
+            && !_state.IsInventoryOpen && !_state.IsBarterOpen)
+        {
+            _state = _state with { IsCharacterScreenOpen = !_state.IsCharacterScreenOpen };
+            base.Update(gameTime); return;
+        }
+
+        // Swallow all other input while character screen is open
+        if (_state.IsCharacterScreenOpen) { base.Update(gameTime); return; }
 
         // ── Interaction target choice menu ────────────────────────────────────
         if (_state.IsInteractionMenuOpen)
@@ -456,7 +471,8 @@ public sealed class MonoRogueGame : Game
             GuaranteedNearCount: 4,
             NearZoneRadius:      14
         );
-        return WorldGenerator.Generate(worldParams, _registry, "background_blacksmith_child", freshPlayer);
+        var world = WorldGenerator.Generate(worldParams, _registry, "background_blacksmith_child", freshPlayer);
+        return world with { LocationName = "Thornhaven Village" };
     }
 
     /// <summary>Generates a dungeon floor (floors 1+), preserving player state.</summary>
@@ -510,7 +526,7 @@ public sealed class MonoRogueGame : Game
         state = state.AppendMessage($"Floor {floorLevel} - you are level {existingPlayer.Level?.Level ?? 1}.");
 
         var vis = FovSystem.Compute(state, dungeon.PlayerSpawn, 10);
-        return state with { VisibleTiles = vis, ExploredTiles = vis };
+        return state with { VisibleTiles = vis, ExploredTiles = vis, LocationName = $"Dungeon - Level {floorLevel}" };
     }
 
     private void ExecuteOption(Core.Model.DialogueOption option, Guid npcId, string npcName)
