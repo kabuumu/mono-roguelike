@@ -174,57 +174,55 @@ public sealed class AsciiRenderer
 
     private void DrawHud(GameState state, int vpW, int vpH)
     {
-        // Dark bar across the top
-        DrawRect(0, 0, vpW, HudTopPx, new Color(0, 0, 0, 210));
+        // Panel background + bottom accent line
+        DrawRect(0, 0, vpW, HudTopPx, new Color(PanelBg.R, PanelBg.G, PanelBg.B, (byte)210));
+        DrawRect(0, HudTopPx - 2, vpW, 2, BorderAccent);
 
         var player = state.TryGetPlayer();
         if (player is null) return;
 
-        var hp      = player.Health;
-        var lvl     = player.Level;
-        var effAtk  = CombatSystem.GetEffectiveAttack(state,  player);
-        var effDef  = CombatSystem.GetEffectiveDefense(state, player);
+        var hp     = player.Health;
+        var lvl    = player.Level;
+        var effAtk = CombatSystem.GetEffectiveAttack(state,  player);
+        var effDef = CombatSystem.GetEffectiveDefense(state, player);
 
-        // HP with colour-coded bar
+        // Vitality with colour-coded bar
         var hpColor = HpColor(hp?.Current ?? 0, hp?.Max ?? 1);
-        Print($"HP {hp?.Current ?? 0}/{hp?.Max ?? 0}", 6, 6, hpColor);
+        Print($"Vitality {hp?.Current ?? 0}/{hp?.Max ?? 0}", 6, 6, hpColor);
 
-        // HP bar (narrow strip)
         if (hp is not null && hp.Max > 0)
         {
-            int barW  = 80;
+            int barW   = 80;
             int filled = (int)(barW * (float)hp.Current / hp.Max);
-            DrawRect(6,  24, barW, 6, new Color(60, 20, 20));
-            DrawRect(6,  24, filled, 6, hpColor);
+            DrawRect(6, 24, barW, 6, new Color(60, 20, 20));
+            DrawRect(6, 24, filled, 6, hpColor);
         }
 
         Print($"Lv {lvl?.Level ?? 1}  XP {lvl?.Xp ?? 0}/{lvl?.XpToNextLevel ?? 100}",
-              100, 6, new Color(180, 180, 255));
-        Print($"ATK {effAtk}  DEF {effDef}",
-              280, 6, new Color(220, 220, 140));
-
-        var floorText = state.FloorLevel == 0 ? "Overworld" : $"Floor {state.FloorLevel}";
-        Print($"{floorText}   Turn {state.TurnNumber}",
-              430, 6, HudTextColor);
+              130, 6, new Color(180, 180, 255));
+        Print($"Attack {effAtk}  Defence {effDef}",
+              310, 6, TextSecondary);
+        Print(state.LocationName, 490, 6, TextPrimary);
 
         var weapName  = EquippedName(state, player.Equipment?.WeaponId);
         var armorName = EquippedName(state, player.Equipment?.ArmorId);
-        Print($"[{weapName}]  [{armorName}]", 600, 6, new Color(160, 180, 220));
+        Print($"[{weapName}]  [{armorName}]", 670, 6, new Color(200, 185, 150));
 
-        // Key hints
-        Print("Move:arrows/hjkl  T:talk  G:pickup  C:interact  U:use item  I:inventory  P:character  >:descend",
-              6, 50, new Color(100, 100, 100));
+        // [?] Help hint — far right, dim gold, replaces full key-hint line
+        var helpStr = "[?] Help";
+        var helpW   = (int)_font.MeasureString(helpStr).X;
+        Print(helpStr, vpW - helpW - 6, 50, TextDim);
 
         // ── Message log (last 3 lines, bottom of screen) ─────────────────────
         var log  = state.MessageLog;
         int show = Math.Min(3, log.Count);
         for (int i = 0; i < show; i++)
         {
-            float age   = show - 1 - i;
-            var alpha   = (byte)Math.Max(100, 230 - (int)(age * 65));
-            var y       = vpH - (show - i) * (TileH + 2) - 4;
+            float age  = show - 1 - i;
+            var alpha  = (byte)Math.Max(100, 230 - (int)(age * 65));
+            var y      = vpH - (show - i) * (TileH + 2) - 4;
             DrawRect(0, y - 2, vpW, TileH + 4, new Color(0, 0, 0, 160));
-            var c = new Color(HudTextColor.R, HudTextColor.G, HudTextColor.B, alpha);
+            var c = new Color(TextPrimary.R, TextPrimary.G, TextPrimary.B, alpha);
             Print(log[log.Count - show + i], 6, y, c);
         }
     }
@@ -692,7 +690,7 @@ public sealed class AsciiRenderer
         var cy = vpH / 2f;
 
         CentreText(title,    cx, cy - 50, titleColor);
-        CentreText(sub,      cx, cy,      HudTextColor);
+        CentreText(sub,      cx, cy,      TextPrimary);
         CentreText($"Floor reached: {state.FloorLevel}   Turns: {state.TurnNumber}",
                    cx, cy + 40, new Color(160, 160, 160));
         CentreText("[R] Restart", cx, cy + 80, new Color(140, 140, 200));
