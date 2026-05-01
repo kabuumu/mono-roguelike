@@ -47,7 +47,11 @@ public sealed record GameState(
     /// <summary>Selected row index in the interaction choice menu.</summary>
     int InteractionTargetIndex = 0,
     /// <summary>Non-null when the barter screen is open.</summary>
-    BarterState? ActiveBarter = null
+    BarterState? ActiveBarter = null,
+    /// <summary>Is the character screen open?</summary>
+    bool IsCharacterScreenOpen = false,
+    /// <summary>Display name of the current area shown in the HUD.</summary>
+    string LocationName = "Unknown Lands"
 )
 {
     // ── Factory ────────────────────────────────────────────────────────────
