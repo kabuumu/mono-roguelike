@@ -1,5 +1,6 @@
 namespace MonoRogue.Shell;
 
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoRogue.Core.Model;
@@ -31,15 +32,24 @@ public sealed class AsciiRenderer
     private readonly GlyphMap       _glyphMap;
     private readonly GraphicsDevice _gfx;
     private readonly Texture2D      _pixel;
+    private readonly DataRegistry   _registry;
 
-    private static readonly Color HudTextColor = new(200, 200, 180);
+    // ── Classic High Fantasy palette ─────────────────────────────────────────
+    private static readonly Color PanelBg      = new(26,  18,  8);   // #1a1208
+    private static readonly Color BorderSide   = new(139, 105, 20);  // #8B6914
+    private static readonly Color BorderAccent = new(200, 153, 31);  // #C8991F
+    private static readonly Color TextPrimary  = new(232, 208, 144); // #E8D090
+    private static readonly Color TextSecondary = new(204, 187, 170); // #CCBBAA
+    private static readonly Color TextDim      = new(155, 122, 42);  // #9B7A2A
+    private static readonly Color Separator    = new(90,  64,  16);  // #5a4010
 
-    public AsciiRenderer(SpriteBatch batch, SpriteFont font, GlyphMap glyphMap, GraphicsDevice gfx)
+    public AsciiRenderer(SpriteBatch batch, SpriteFont font, GlyphMap glyphMap, GraphicsDevice gfx, DataRegistry registry)
     {
         _batch    = batch;
         _font     = font;
         _glyphMap = glyphMap;
         _gfx      = gfx;
+        _registry = registry;
 
         _pixel = new Texture2D(gfx, 1, 1);
         _pixel.SetData(new[] { Color.White });
@@ -134,6 +144,10 @@ public sealed class AsciiRenderer
         if (state.IsInteractionMenuOpen)
             DrawInteractionContext(state, vpW, vpH);
 
+        // Pass 8: character screen (full-screen overlay)
+        if (state.IsCharacterScreenOpen)
+            DrawCharacterScreen(state, vpW, vpH);
+
         _batch.End();
     }
 
@@ -198,7 +212,7 @@ public sealed class AsciiRenderer
         Print($"[{weapName}]  [{armorName}]", 600, 6, new Color(160, 180, 220));
 
         // Key hints
-        Print("Move:arrows/hjkl  T:talk  G:pickup  C:interact  U:use item  I:inventory  >:descend",
+        Print("Move:arrows/hjkl  T:talk  G:pickup  C:interact  U:use item  I:inventory  P:character  >:descend",
               6, 50, new Color(100, 100, 100));
 
         // ── Message log (last 3 lines, bottom of screen) ─────────────────────
@@ -464,6 +478,190 @@ public sealed class AsciiRenderer
 
         Print("[Enter/C] Confirm   [Esc] Cancel",
               panelX + 10, panelY + panelH - 22, new Color(110, 130, 150));
+    }
+
+    // ── Character Screen ──────────────────────────────────────────────────────
+
+    private void DrawCharacterScreen(GameState state, int vpW, int vpH)
+    {
+        var player = state.TryGetPlayer();
+        if (player is null) return;
+
+        // Dim the world behind the panel
+        DrawRect(0, 0, vpW, vpH, new Color(0, 0, 0, 200));
+
+        const int margin = 30;
+        int boxX = margin;
+        int boxY = margin;
+        int boxW = vpW - margin * 2;
+        int boxH = vpH - margin * 2;
+
+        DrawRect(boxX, boxY,            boxW, boxH, new Color(10, 18, 30, 250));
+        DrawRect(boxX, boxY,            boxW, 2,    new Color(120, 160, 220, 220));
+        DrawRect(boxX, boxY + boxH - 2, boxW, 2,    new Color(120, 160, 220, 220));
+
+        CentreText("CHARACTER", boxX + boxW / 2f, boxY + 18, new Color(180, 220, 255));
+        DrawRect(boxX + 20, boxY + 38, boxW - 40, 1, new Color(80, 100, 140, 180));
+
+        // Three equal columns
+        int col1X    = boxX + 24;
+        int col2X    = boxX + boxW / 3 + 12;
+        int col3X    = boxX + (boxW * 2) / 3 + 12;
+        int colInnerW = boxW / 3 - 48;
+        int contentY  = boxY + 52;
+
+        // Column dividers
+        DrawRect(col2X - 16, boxY + 40, 1, boxH - 50, new Color(60, 80, 100, 160));
+        DrawRect(col3X - 16, boxY + 40, 1, boxH - 50, new Color(60, 80, 100, 160));
+
+        // ── Column 1: Statistics ──────────────────────────────────────────────
+        int y = contentY;
+        Print("STATISTICS", col1X, y, new Color(160, 200, 255));
+        DrawRect(col1X, y + 18, colInnerW, 1, new Color(60, 80, 100, 140));
+        y += 30;
+
+        var hp     = player.Health;
+        var lvl    = player.Level;
+        var effAtk = CombatSystem.GetEffectiveAttack(state,  player);
+        var effDef = CombatSystem.GetEffectiveDefense(state, player);
+        var inv    = player.Inventory;
+        var equip  = player.Equipment;
+
+        Print($"Name:    {player.Identity?.Name ?? "Unknown"}", col1X, y, new Color(220, 220, 200)); y += 24;
+        Print($"Level:   {lvl?.Level ?? 1}",                    col1X, y, new Color(180, 180, 255)); y += 24;
+        Print($"XP:      {lvl?.Xp ?? 0} / {lvl?.XpToNextLevel ?? 100}",
+              col1X, y, new Color(180, 180, 255)); y += 28;
+
+        var hpColor = HpColor(hp?.Current ?? 0, hp?.Max ?? 1);
+        Print($"HP:      {hp?.Current ?? 0} / {hp?.Max ?? 0}", col1X, y, hpColor);
+        if (hp is not null && hp.Max > 0)
+        {
+            int barW   = 80;
+            int filled = (int)(barW * (float)hp.Current / hp.Max);
+            DrawRect(col1X + 92, y + 4, barW, 8, new Color(50, 15, 15));
+            DrawRect(col1X + 92, y + 4, filled, 8, hpColor);
+        }
+        y += 24;
+
+        Print($"Attack:  {effAtk}", col1X, y, new Color(220, 140, 140)); y += 24;
+        Print($"Defense: {effDef}", col1X, y, new Color(140, 180, 220)); y += 28;
+
+        Print($"Gold:    {inv?.Gold ?? 0}g", col1X, y, new Color(240, 220, 100)); y += 28;
+
+        Print("Equipped:",                    col1X, y, new Color(160, 180, 200)); y += 22;
+        Print($"  Weapon: {EquippedName(state, equip?.WeaponId)}", col1X, y, new Color(200, 200, 180)); y += 22;
+        Print($"  Armor:  {EquippedName(state, equip?.ArmorId)}",  col1X, y, new Color(200, 200, 180));
+
+        // ── Column 2: Background ──────────────────────────────────────────────
+        y = contentY;
+        Print("BACKGROUND", col2X, y, new Color(255, 200, 100));
+        DrawRect(col2X, y + 18, colInnerW, 1, new Color(60, 80, 100, 140));
+        y += 30;
+
+        var bgId = player.Background?.BackgroundId;
+        if (bgId is not null && _registry.Backgrounds.TryGetValue(bgId, out var bg))
+        {
+            Print(bg.Name, col2X, y, new Color(255, 220, 120)); y += 28;
+
+            foreach (var line in WrapText(bg.Description, colInnerW))
+            {
+                Print(line, col2X, y, new Color(180, 180, 160));
+                y += 20;
+            }
+            y += 12;
+
+            if (bg.StartingItems?.Count > 0)
+            {
+                Print("Starting gear:", col2X, y, new Color(160, 180, 200)); y += 22;
+                foreach (var kvp in bg.StartingItems)
+                {
+                    var label = System.Globalization.CultureInfo.CurrentCulture.TextInfo
+                        .ToTitleCase(kvp.Key.Replace("item_", "").Replace("_", " "));
+                    string qty = kvp.Value > 1 ? $" x{kvp.Value}" : "";
+                    Print($"  - {label}{qty}", col2X, y, new Color(200, 200, 180)); y += 20;
+                }
+                y += 10;
+            }
+
+            if (bg.FactionReputation?.Count > 0)
+            {
+                Print("Reputation:", col2X, y, new Color(160, 180, 200)); y += 22;
+                foreach (var kvp in bg.FactionReputation)
+                {
+                    var factionName = _registry.Factions.TryGetValue(kvp.Key, out var fac)
+                        ? fac.Name : kvp.Key;
+                    var repColor = kvp.Value >= 50 ? new Color(140, 220, 140) : new Color(200, 200, 180);
+                    Print($"  - {factionName}: {kvp.Value}", col2X, y, repColor); y += 20;
+                }
+            }
+        }
+        else
+        {
+            Print("No background.", col2X, y, new Color(120, 120, 120));
+        }
+
+        // ── Column 3: Quests ──────────────────────────────────────────────────
+        y = contentY;
+        Print("QUESTS", col3X, y, new Color(140, 220, 140));
+        DrawRect(col3X, y + 18, colInnerW, 1, new Color(60, 80, 100, 140));
+        y += 30;
+
+        var activeQuests    = state.ActiveQuests;
+        var completedIds    = state.CompletedQuestIds;
+
+        if (activeQuests is null || activeQuests.Count == 0)
+        {
+            Print("No active quests.", col3X, y, new Color(120, 120, 120));
+            y += 22;
+        }
+        else
+        {
+            Print($"Active ({activeQuests.Count}):", col3X, y, new Color(200, 220, 160)); y += 22;
+            foreach (var quest in activeQuests)
+            {
+                Print($"> {quest.Name}", col3X, y, new Color(180, 230, 140)); y += 20;
+
+                // Kill objectives
+                if (quest.Objectives is { } objectives && !objectives.IsDefault)
+                {
+                    foreach (var obj in objectives)
+                    {
+                        int cur   = quest.Progress?.GetValueOrDefault(obj.TargetId, 0) ?? 0;
+                        var label = System.Globalization.CultureInfo.CurrentCulture.TextInfo
+                            .ToTitleCase(obj.TargetId.Replace("creature_", "").Replace("_", " "));
+                        Print($"  Kill {label}: {cur}/{obj.RequiredCount}",
+                              col3X, y, new Color(160, 180, 140)); y += 18;
+                    }
+                }
+                // Item delivery objectives
+                else if (quest.RequiredItems?.Count > 0)
+                {
+                    foreach (var kvp in quest.RequiredItems)
+                    {
+                        var label = System.Globalization.CultureInfo.CurrentCulture.TextInfo
+                            .ToTitleCase(kvp.Key.Replace("item_", "").Replace("_", " "));
+                        int have  = player.Inventory?.Resources?.GetValueOrDefault(kvp.Key, 0) ?? 0;
+                        Print($"  {label}: {have}/{kvp.Value}",
+                              col3X, y, new Color(160, 180, 140)); y += 18;
+                    }
+                }
+                y += 6;
+            }
+        }
+
+        if (completedIds is not null && completedIds.Count > 0)
+        {
+            y += 4;
+            Print($"Completed ({completedIds.Count}):", col3X, y, new Color(140, 180, 140)); y += 22;
+            foreach (var qid in completedIds)
+            {
+                var name = _registry.Quests.TryGetValue(qid, out var qt) ? qt.Name : qid;
+                Print($"  [done] {name}", col3X, y, new Color(120, 160, 120)); y += 20;
+            }
+        }
+
+        // Footer hint
+        Print("[P / ESC] Close", boxX + 12, boxY + boxH - 22, new Color(120, 120, 140));
     }
 
     // ── Main Menu ────────────────────────────────────────────────────────────
