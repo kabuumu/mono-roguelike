@@ -249,23 +249,25 @@ public sealed class AsciiRenderer
         int boxY = vpH - boxH - 10;
 
         // ── Chrome ────────────────────────────────────────────────────────────
-        DrawRect(margin, boxY,            boxW, boxH, new Color(8, 16, 32, 240));
-        DrawRect(margin, boxY,            boxW, 2,    new Color(100, 140, 200, 220));
-        DrawRect(margin, boxY + boxH - 2, boxW, 2,    new Color(100, 140, 200, 220));
+        DrawRect(margin, boxY,            boxW, boxH, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 240));
+        DrawRect(margin, boxY,            boxW, 2,    BorderAccent);
+        DrawRect(margin, boxY + boxH - 2, boxW, 2,    BorderAccent);
+        DrawRect(margin,          boxY, 1, boxH, BorderSide);
+        DrawRect(margin + boxW - 1, boxY, 1, boxH, BorderSide);
 
         // ── NPC name + separator ──────────────────────────────────────────────
-        Print(dlg.NpcName, innerX, boxY + 10, new Color(255, 220, 100));
-        DrawRect(innerX, boxY + 32, boxW - 24, 1, new Color(80, 100, 140, 180));
+        Print(dlg.NpcName, innerX, boxY + 10, BorderAccent);
+        DrawRect(innerX, boxY + 32, boxW - 24, 1, Separator);
 
         // ── Current message ───────────────────────────────────────────────────
         var wrapped = WrapText(dlg.CurrentText, boxW - 28);
         for (int i = 0; i < Math.Min(wrapped.Length, maxMsgLine); i++)
-            Print(wrapped[i], innerX, boxY + textTop + i * lineH, new Color(220, 220, 200));
+            Print(wrapped[i], innerX, boxY + textTop + i * lineH, TextSecondary);
 
         // ── Footer: options on last line, page counter otherwise ──────────────
         if (dlg.ShowingOptions)
         {
-            DrawRect(innerX, boxY + optSepY, boxW - 24, 1, new Color(80, 100, 140, 180));
+            DrawRect(innerX, boxY + optSepY, boxW - 24, 1, Separator);
 
             for (int i = 0; i < dlg.Options.Length; i++)
             {
@@ -273,25 +275,25 @@ public sealed class AsciiRenderer
                 bool selected = i == dlg.SelectedOption;
                 if (selected)
                 {
-                    DrawRect(margin + 4, lineY - 3, boxW - 8, 24, new Color(40, 70, 120, 180));
-                    Print($"> {dlg.Options[i].Label}", innerX - 4, lineY, new Color(180, 220, 255));
+                    DrawRect(margin + 4, lineY - 3, boxW - 8, 24, new Color(80, 60, 20, 180));
+                    Print($"> {dlg.Options[i].Label}", innerX - 4, lineY, TextPrimary);
                 }
                 else
                 {
-                    Print($"  {dlg.Options[i].Label}", innerX, lineY, new Color(200, 200, 180));
+                    Print($"  {dlg.Options[i].Label}", innerX, lineY, TextSecondary);
                 }
             }
 
             Print("[Up/Down] Select   [SPACE] Choose",
-                  innerX, boxY + boxH - 24, new Color(120, 120, 140));
+                  innerX, boxY + boxH - 24, TextDim);
         }
         else
         {
             var pageStr = $"[{dlg.CurrentLine + 1}/{dlg.Lines.Length}]";
             var hintStr = dlg.IsLastLine ? "[SPACE] Close" : "[SPACE] Next";
             var hintW   = (int)_font.MeasureString(hintStr).X;
-            Print(pageStr, innerX, boxY + boxH - 24, new Color(120, 120, 140));
-            Print(hintStr, margin + boxW - hintW - 12, boxY + boxH - 24, new Color(160, 200, 160));
+            Print(pageStr, innerX, boxY + boxH - 24, TextDim);
+            Print(hintStr, margin + boxW - hintW - 12, boxY + boxH - 24, TextDim);
         }
     }
 
@@ -309,26 +311,28 @@ public sealed class AsciiRenderer
         int innerX = boxX + 24;
 
         DrawRect(0, 0, vpW, vpH, new Color(0, 0, 0, 160));
-        DrawRect(boxX, boxY,            boxW, boxH, new Color(16, 24, 32, 240));
-        DrawRect(boxX, boxY,            boxW, 2,    new Color(200, 140, 100, 220));
-        DrawRect(boxX, boxY + boxH - 2, boxW, 2,    new Color(200, 140, 100, 220));
+        DrawRect(boxX, boxY,            boxW, boxH, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 240));
+        DrawRect(boxX, boxY,            boxW, 2,    BorderAccent);
+        DrawRect(boxX, boxY + boxH - 2, boxW, 2,    BorderAccent);
+        DrawRect(boxX,           boxY, 1, boxH, BorderSide);
+        DrawRect(boxX + boxW - 1, boxY, 1, boxH, BorderSide);
 
         CentreText($"WARES - {barter.NpcName.ToUpper()}",
-                   boxX + boxW / 2f, boxY + 24, new Color(255, 200, 100));
-        DrawRect(innerX, boxY + 44, boxW - 48, 1, new Color(80, 100, 140, 180));
+                   boxX + boxW / 2f, boxY + 24, BorderAccent);
+        DrawRect(innerX, boxY + 44, boxW - 48, 1, Separator);
 
         var player = state.TryGetPlayer();
         int drawY  = boxY + 56;
         Print($"Your gold: {player?.Inventory?.Gold ?? 0}g",
-              innerX, drawY, new Color(240, 220, 100));
+              innerX, drawY, TextPrimary);
         drawY += 28;
-        DrawRect(innerX, drawY, boxW - 48, 1, new Color(60, 70, 90, 140));
+        DrawRect(innerX, drawY, boxW - 48, 1, Separator);
         drawY += 12;
 
         var items = trader.Inventory?.Items ?? [];
         if (items.IsEmpty)
         {
-            Print("  (Nothing for sale)", innerX, drawY, new Color(120, 120, 120));
+            Print("  (Nothing for sale)", innerX, drawY, TextDim);
         }
         else
         {
@@ -343,21 +347,21 @@ public sealed class AsciiRenderer
 
                 if (sel)
                 {
-                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 24, new Color(80, 120, 60, 180));
-                    Print($"> {name}", innerX - 4, drawY, new Color(180, 255, 140));
-                    Print(priceStr, boxX + boxW - priceW - 24, drawY, new Color(240, 220, 100));
+                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 24, new Color(80, 60, 20, 180));
+                    Print($"> {name}", innerX - 4, drawY, TextPrimary);
+                    Print(priceStr, boxX + boxW - priceW - 24, drawY, TextPrimary);
                 }
                 else
                 {
-                    Print($"  {name}", innerX, drawY, new Color(220, 220, 220));
-                    Print(priceStr, boxX + boxW - priceW - 24, drawY, new Color(180, 160, 80));
+                    Print($"  {name}", innerX, drawY, TextSecondary);
+                    Print(priceStr, boxX + boxW - priceW - 24, drawY, TextDim);
                 }
                 drawY += 26;
             }
         }
 
         Print("[Up/Down] Select   [Enter] Buy   [Esc] Close",
-              boxX + 8, boxY + boxH - 24, new Color(140, 140, 140));
+              boxX + 8, boxY + boxH - 24, TextDim);
     }
 
     // ── Inventory box ────────────────────────────────────────────────────────
@@ -375,24 +379,26 @@ public sealed class AsciiRenderer
 
         // Background panel
         DrawRect(0, 0, vpW, vpH, new Color(0, 0, 0, 160)); // Darken background slightly
-        DrawRect(boxX, boxY, boxW, boxH, new Color(16, 24, 32, 240));
-        DrawRect(boxX, boxY, boxW, 2, new Color(200, 140, 100, 220)); // top border
-        DrawRect(boxX, boxY + boxH - 2, boxW, 2, new Color(200, 140, 100, 220)); // bottom border
+        DrawRect(boxX, boxY, boxW, boxH, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 240));
+        DrawRect(boxX, boxY,            boxW, 2, BorderAccent);
+        DrawRect(boxX, boxY + boxH - 2, boxW, 2, BorderAccent);
+        DrawRect(boxX,           boxY, 1, boxH, BorderSide);
+        DrawRect(boxX + boxW - 1, boxY, 1, boxH, BorderSide);
 
-        CentreText("INVENTORY", boxX + boxW / 2, boxY + 24, new Color(255, 200, 100));
-        DrawRect(innerX, boxY + 44, boxW - 48, 1, new Color(80, 100, 140, 180));
+        CentreText("INVENTORY", boxX + boxW / 2, boxY + 24, BorderAccent);
+        DrawRect(innerX, boxY + 44, boxW - 48, 1, Separator);
 
         int drawY = boxY + 60;
-        Print($"Gold: {player.Inventory.Gold}g", innerX, drawY, new Color(240, 220, 100));
+        Print($"Gold: {player.Inventory.Gold}g", innerX, drawY, TextPrimary);
         drawY += 30;
 
         // Concrete items (equipable / consumable entity references) — selectable
-        Print("Items:", innerX, drawY, new Color(160, 180, 200));
+        Print("Items:", innerX, drawY, TextDim);
         drawY += 24;
 
         if (player.Inventory.Items.IsEmpty)
         {
-            Print("  (None)", innerX, drawY, new Color(120, 120, 120));
+            Print("  (None)", innerX, drawY, TextDim);
             drawY += 24;
         }
         else
@@ -405,12 +411,12 @@ public sealed class AsciiRenderer
                 bool sel    = i == selectedIndex;
                 if (sel)
                 {
-                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 22, new Color(80, 120, 60, 180));
-                    Print($"> {name}", innerX - 4, drawY, new Color(180, 255, 140));
+                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 22, new Color(80, 60, 20, 178));
+                    Print($"> {name}", innerX - 4, drawY, TextPrimary);
                 }
                 else
                 {
-                    Print($"  {name}", innerX, drawY, new Color(220, 220, 220));
+                    Print($"  {name}", innerX, drawY, TextSecondary);
                 }
                 drawY += 24;
             }
@@ -419,12 +425,12 @@ public sealed class AsciiRenderer
         drawY += 12;
 
         // Abstract resources — informational only (use C key near interactables)
-        Print("Resources:", innerX, drawY, new Color(160, 180, 200));
+        Print("Resources:", innerX, drawY, TextDim);
         drawY += 24;
 
         if (player.Inventory.Resources is null || player.Inventory.Resources.IsEmpty)
         {
-            Print("  (None)", innerX, drawY, new Color(120, 120, 120));
+            Print("  (None)", innerX, drawY, TextDim);
         }
         else
         {
@@ -432,13 +438,13 @@ public sealed class AsciiRenderer
             {
                 var label     = kvp.Key.Replace("item_", "").Replace("_", " ");
                 var titleCase = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(label);
-                Print($"  {titleCase} x{kvp.Value}", innerX, drawY, new Color(220, 220, 220));
+                Print($"  {titleCase} x{kvp.Value}", innerX, drawY, TextSecondary);
                 drawY += 24;
             }
         }
 
         // Key hints at the bottom
-        Print("[Up/Down] Select item   [U/Enter] Use   [I/ESC] Close", boxX + 8, boxY + boxH - 24, new Color(140, 140, 140));
+        Print("[Up/Down] Select item   [U/Enter] Use   [I/ESC] Close", boxX + 8, boxY + boxH - 24, TextDim);
     }
 
     // ── Interaction target highlight ──────────────────────────────────────────
@@ -464,18 +470,20 @@ public sealed class AsciiRenderer
         int panelX = vpW - panelW - 12;
         int panelY = vpH - panelH - (3 * (TileH + 2) + 12); // above message log
 
-        DrawRect(panelX,     panelY,              panelW, panelH, new Color(12, 20, 40, 220));
-        DrawRect(panelX,     panelY,              panelW, 2,      new Color(80, 160, 220, 200));
-        DrawRect(panelX,     panelY + panelH - 2, panelW, 2,      new Color(80, 160, 220, 200));
+        DrawRect(panelX,     panelY,              panelW, panelH, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 220));
+        DrawRect(panelX,     panelY,              panelW, 2,      BorderAccent);
+        DrawRect(panelX,     panelY + panelH - 2, panelW, 2,      BorderAccent);
+        DrawRect(panelX,              panelY, 1, panelH, BorderSide);
+        DrawRect(panelX + panelW - 1, panelY, 1, panelH, BorderSide);
 
-        Print($"Interact: {current.Label}", panelX + 10, panelY + 10, new Color(140, 210, 255));
+        Print($"Interact: {current.Label}", panelX + 10, panelY + 10, TextPrimary);
 
         if (count > 1)
             Print($"({state.InteractionTargetIndex + 1}/{count})  [Up/Down] cycle",
-                  panelX + 10, panelY + 30, new Color(160, 160, 190));
+                  panelX + 10, panelY + 30, TextSecondary);
 
         Print("[Enter/C] Confirm   [Esc] Cancel",
-              panelX + 10, panelY + panelH - 22, new Color(110, 130, 150));
+              panelX + 10, panelY + panelH - 22, TextDim);
     }
 
     // ── Character Screen ──────────────────────────────────────────────────────
