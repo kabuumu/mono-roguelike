@@ -175,7 +175,7 @@ public sealed class AsciiRenderer
     private void DrawHud(GameState state, int vpW, int vpH)
     {
         // Panel background + bottom accent line
-        DrawRect(0, 0, vpW, HudTopPx, new Color(PanelBg.R, PanelBg.G, PanelBg.B, (byte)210));
+        DrawRect(0, 0, vpW, HudTopPx, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 210));
         DrawRect(0, HudTopPx - 2, vpW, 2, BorderAccent);
 
         var player = state.TryGetPlayer();
