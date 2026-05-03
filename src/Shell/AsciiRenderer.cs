@@ -704,19 +704,23 @@ public sealed class AsciiRenderer
 
         var (title, sub, titleColor) = state.Phase switch
         {
-            PlayerDeadPhase dead => ("YOU DIED", dead.Cause, new Color(220, 60, 60)),
-            VictoryPhase         => ("YOU WIN!", "Congratulations, hero!", new Color(80, 220, 80)),
+            PlayerDeadPhase dead => ("A Hero Falls", dead.Cause, new Color(204, 92, 40)),
+            VictoryPhase         => ("Legend Forged", "Congratulations, hero!", new Color(128, 200, 80)),
             _                    => ("GAME OVER", "", Color.White)
         };
+
+        var playerLevel = state.TryGetPlayer()?.Level?.Level ?? 1;
+        var statsLine   = state.Phase is PlayerDeadPhase
+            ? $"Fallen in: {state.LocationName}   Level {playerLevel}"
+            : $"Level {playerLevel} reached   {state.LocationName}";
 
         var cx = vpW / 2f;
         var cy = vpH / 2f;
 
-        CentreText(title,    cx, cy - 50, titleColor);
-        CentreText(sub,      cx, cy,      TextPrimary);
-        CentreText($"Floor reached: {state.FloorLevel}   Turns: {state.TurnNumber}",
-                   cx, cy + 40, new Color(160, 160, 160));
-        CentreText("[R] Restart", cx, cy + 80, new Color(140, 140, 200));
+        CentreText(title,     cx, cy - 50, titleColor);
+        CentreText(sub,       cx, cy,      TextSecondary);
+        CentreText(statsLine, cx, cy + 40, TextDim);
+        CentreText("[R] Begin Anew", cx, cy + 80, new Color(140, 140, 200));
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
