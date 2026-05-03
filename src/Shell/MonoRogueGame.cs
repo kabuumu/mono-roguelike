@@ -88,11 +88,13 @@ public sealed class MonoRogueGame : Game
 
         // ── Escape: close menus in order of priority ──────────────────────────
         if (_input.WasPressed(Keys.Escape))
-        {            if (_state.IsCharacterScreenOpen)
+        {
+            if (_state.IsCharacterScreenOpen)
             {
                 _state = _state with { IsCharacterScreenOpen = false };
                 base.Update(gameTime); return;
-            }            if (_state.IsInteractionMenuOpen)
+            }
+            if (_state.IsInteractionMenuOpen)
             {
                 _state = _state with { InteractionTargets = null, InteractionTargetIndex = 0 };
                 base.Update(gameTime); return;
