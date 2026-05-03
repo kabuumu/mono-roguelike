@@ -411,7 +411,7 @@ public sealed class AsciiRenderer
                 bool sel    = i == selectedIndex;
                 if (sel)
                 {
-                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 22, new Color(80, 60, 20, 178));
+                    DrawRect(boxX + 4, drawY - 2, boxW - 8, 22, new Color(80, 60, 20, 180));
                     Print($"> {name}", innerX - 4, drawY, TextPrimary);
                 }
                 else
@@ -552,7 +552,7 @@ public sealed class AsciiRenderer
         y += 24;
 
         Print($"Attack:  {effAtk}", col1X, y, new Color(220, 140, 140)); y += 24;
-        Print($"Defense: {effDef}", col1X, y, new Color(140, 180, 220)); y += 28;
+        Print($"Defence: {effDef}", col1X, y, new Color(140, 180, 220)); y += 28;
 
         Print($"Gold:    {inv?.Gold ?? 0}g", col1X, y, TextPrimary); y += 28;
 
