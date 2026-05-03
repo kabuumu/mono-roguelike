@@ -679,8 +679,21 @@ public sealed class AsciiRenderer
         var cx = vpW / 2f;
         var cy = vpH / 2f;
 
-        CentreText("MONOROGUE", cx, cy - 40, new Color(200, 180, 80));
-        CentreText("[ENTER] New Game", cx, cy + 20, new Color(140, 200, 140));
+        // Decorative frame around title block
+        const int frameW = 280;
+        const int frameH = 52;
+        int frameX = (int)(cx - frameW / 2f);
+        int frameY = (int)(cy - 56);
+        DrawRect(frameX,              frameY,              frameW, frameH, new Color((int)PanelBg.R, (int)PanelBg.G, (int)PanelBg.B, 220));
+        DrawRect(frameX,              frameY,              frameW, 2,      BorderAccent);
+        DrawRect(frameX,              frameY + frameH - 2, frameW, 2,      BorderAccent);
+        DrawRect(frameX,              frameY,              2,      frameH, BorderSide);
+        DrawRect(frameX + frameW - 2, frameY,              2,      frameH, BorderSide);
+
+        CentreText("MONOROGUE",                                      cx, cy - 40, BorderAccent);
+        CentreText("An Open-World Adventure",                        cx, cy - 18, TextDim);
+        CentreText("A lone traveller steps into an unknown land...", cx, cy + 14, TextSecondary);
+        CentreText("[ENTER] Begin Your Journey",                     cx, cy + 44, new Color(140, 202, 140));
     }
 
     // ── End screen ────────────────────────────────────────────────────────────
