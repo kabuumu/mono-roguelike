@@ -1,0 +1,169 @@
+[
+  // ── Consumables ───────────────────────────────────────────────────────────
+  {
+    "id":             "item_health_potion",
+    "name":           "Health Potion",
+    "spriteKey":      "item_potion_health",
+    "colorTint":      "#FF4444",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "healAmount":     20,
+    "value":          10
+  },
+  {
+    "id": "item_bandage",
+    "name": "Linen Bandage",
+    "spriteKey": "item_bandage",
+    "colorTint": "#EEEECC",
+    "isItem": true,
+    "itemType": "Consumable",
+    "healAmount": 8,
+    "value": 5
+  },
+
+  // ── Weapons ───────────────────────────────────────────────────────────────
+  {
+    "id":             "item_dagger",
+    "name":           "Dagger",
+    "spriteKey":      "item_dagger",
+    "colorTint":      "#DDDDDD",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    2,
+    "value":          15
+  },
+  {
+    "id":             "item_sword",
+    "name":           "Sword",
+    "spriteKey":      "item_sword",
+    "colorTint":      "#CCCCCC",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    4,
+    "value":          30
+  },
+  {
+    "id":             "item_battle_axe",
+    "name":           "Battle Axe",
+    "spriteKey":      "item_battle_axe",
+    "colorTint":      "#AAAAFF",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Weapon",
+    "attackBonus":    6,
+    "value":          50
+  },
+  {
+    "id": "item_axe",
+    "name": "Lumber Axe",
+    "spriteKey": "item_axe",
+    "colorTint": "#AAAAAA",
+    "isItem": true,
+    "itemType": "Weapon",
+    "attackBonus": 2
+  },
+
+  // ── Armour ────────────────────────────────────────────────────────────────
+  {
+    "id":             "item_leather_armor",
+    "name":           "Leather Armour",
+    "spriteKey":      "item_leather_armor",
+    "colorTint":      "#AA8844",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   2,
+    "value":          20
+  },
+  {
+    "id":             "item_shield",
+    "name":           "Shield",
+    "spriteKey":      "item_shield",
+    "colorTint":      "#8888CC",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   3,
+    "value":          25
+  },
+  {
+    "id":             "item_chainmail",
+    "name":           "Chainmail",
+    "spriteKey":      "item_chainmail",
+    "colorTint":      "#CCCCEE",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Armor",
+    "defenseBonus":   5,
+    "value":          45
+  },
+
+  // ── Wilderness loot ───────────────────────────────────────────────────────
+  {
+    "id":             "item_wolf_pelt",
+    "name":           "Wolf Pelt",
+    "spriteKey":      "item_pelt",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          15
+  },
+  {
+    "id":             "item_boar_tusk",
+    "name":           "Boar Tusk",
+    "spriteKey":      "item_tusk",
+    "colorTint":      "#FFDD88",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          10
+  },
+  {
+    "id":             "item_gold_coin",
+    "name":           "Gold Coin",
+    "spriteKey":      "item_gold",
+    "colorTint":      "#FFDD00",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "value":          1
+  },
+
+  // ── Quest items ───────────────────────────────────────────────────────────
+  {
+    "id": "item_empty_bucket",
+    "name": "Empty Bucket",
+    "spriteKey": "item_bucket",
+    "colorTint": "#886644",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_water_bucket",
+    "name": "Bucket of Water",
+    "spriteKey": "item_bucket_water",
+    "colorTint": "#4488EE",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_log",
+    "name": "Wood Log",
+    "spriteKey": "item_log",
+    "colorTint": "#6B4020",
+    "isItem": true,
+    "itemType": "Consumable"
+  },
+  {
+    "id": "item_plank",
+    "name": "Wood Plank",
+    "spriteKey": "item_plank",
+    "colorTint": "#8B6030",
+    "isItem": true,
+    "itemType": "Consumable"
+  }
+]

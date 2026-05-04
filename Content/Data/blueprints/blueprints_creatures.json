@@ -1,0 +1,87 @@
+[
+  // ── Dungeon creatures ─────────────────────────────────────────────────────
+  {
+    "id":             "creature_rat",
+    "name":           "Rat",
+    "spriteKey":      "creature_rat",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "maxHealth":      5,
+    "attack":         2,
+    "defense":        0,
+    "xpValue":        5,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_goblin",
+    "name":           "Goblin",
+    "spriteKey":      "creature_goblin",
+    "colorTint":      "#44FF44",
+    "blocksMovement": true,
+    "maxHealth":      10,
+    "attack":         3,
+    "defense":        0,
+    "xpValue":        10,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_orc",
+    "name":           "Orc",
+    "spriteKey":      "creature_orc",
+    "colorTint":      "#AA4422",
+    "blocksMovement": true,
+    "maxHealth":      18,
+    "attack":         5,
+    "defense":        1,
+    "xpValue":        18,
+    "hasAi":          true
+  },
+  {
+    "id":             "creature_troll",
+    "name":           "Troll",
+    "spriteKey":      "creature_troll",
+    "colorTint":      "#228844",
+    "blocksMovement": true,
+    "maxHealth":      30,
+    "attack":         7,
+    "defense":        2,
+    "xpValue":        30,
+    "hasAi":          true
+  },
+
+  // ── Wilderness creatures ──────────────────────────────────────────────────
+  {
+    "id":             "creature_wolf",
+    "name":           "Wolf",
+    "spriteKey":      "creature_wolf",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "maxHealth":      12,
+    "attack":         4,
+    "defense":        0,
+    "xpValue":        15,
+    "hasAi":          true,
+    "aiBehavior":     "hostile_melee",
+    "faction":        "wild_animals",
+    "drops": [
+      { "itemId": "item_wolf_pelt", "chance": 0.5 }
+    ]
+  },
+  {
+    "id":             "creature_boar",
+    "name":           "Boar",
+    "spriteKey":      "creature_boar",
+    "colorTint":      "#8B6914",
+    "blocksMovement": true,
+    "maxHealth":      16,
+    "attack":         3,
+    "defense":        1,
+    "xpValue":        12,
+    "hasAi":          true,
+    "aiBehavior":     "hostile_melee",
+    "faction":        "wild_animals",
+    "drops": [
+      { "itemId": "item_boar_tusk", "chance": 0.4 }
+    ]
+  }
+]

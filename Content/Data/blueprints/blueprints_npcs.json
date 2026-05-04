@@ -1,33 +1,112 @@
 [
+  // ── Village NPCs (story) ──────────────────────────────────────────────────
   {
-    "id": "env_forge",
-    "name": "Village Forge",
-    "spriteKey": "env_forge",
-    "colorTint": "#884444",
-    "blocksMovement": true
-  },
-  {
-    "id": "env_hut",
-    "name": "Villager Hut",
-    "spriteKey": "env_hut",
-    "colorTint": "#A07040",
-    "blocksMovement": true
-  },
-  {
-    "id": "env_river_tile",
-    "name": "River",
-    "spriteKey": "env_river",
-    "colorTint": "#2244EE",
+    "id":             "npc_elder",
+    "name":           "Elder Maren",
+    "spriteKey":      "npc_elder",
+    "colorTint":      "#FFDD88",
     "blocksMovement": true,
-    "isTile": true
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Welcome to Millhaven, adventurer.",
+      "Dark creatures have crept up from the depths beneath our town.",
+      "If you are brave enough, descend into the dungeon and push them back.",
+      "Return when you have reached the sixth level. Only then will we be safe.",
+      "May fortune guide your blade."
+    ]
   },
   {
-    "id": "env_tree",
-    "name": "Tree",
-    "spriteKey": "env_tree",
-    "colorTint": "#22AA22",
-    "blocksMovement": true
+    "id":             "npc_merchant",
+    "name":           "Davan the Merchant",
+    "spriteKey":      "npc_merchant",
+    "colorTint":      "#88DD88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Finest goods in all of Millhaven!",
+      "Well... I had goods. The last caravan was attacked on the road.",
+      "Whatever you find down there, keep it. I am out of stock for now.",
+      "Come back once this mess is sorted and I'll give you a real discount."
+    ]
   },
+  {
+    "id":             "npc_guard",
+    "name":           "Guard Ollen",
+    "spriteKey":      "npc_guard",
+    "colorTint":      "#8899CC",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Halt! ...Actually, go ahead.",
+      "We are stretched thin. Half the guard went down and didn't come back.",
+      "The entrance to the dungeon is to the south. Watch your step.",
+      "If you find any of our gear down there, it's yours."
+    ]
+  },
+  {
+    "id":             "npc_villager_a",
+    "name":           "Petra",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#DDBB88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "My husband went into the dungeon three days ago.",
+      "He said it would only take an hour.",
+      "Please, if you find him... his name is Rolf."
+    ]
+  },
+  {
+    "id":             "npc_villager_b",
+    "name":           "Old Hessa",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#CCAA99",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "I remember when this town had music.",
+      "Now all we hear are those awful sounds from below.",
+      "Every night. Every single night.",
+      "Bring peace to this place, will you?"
+    ]
+  },
+  {
+    "id":             "npc_villager_c",
+    "name":           "Young Tam",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#EECC88",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "Are you really going down there?",
+      "I heard there are trolls on the lower levels.",
+      "I want to be an adventurer one day too!",
+      "Just... maybe not today."
+    ]
+  },
+  {
+    "id":             "npc_villager_d",
+    "name":           "Mira the Smith",
+    "spriteKey":      "npc_villager",
+    "colorTint":      "#BBBBBB",
+    "blocksMovement": true,
+    "isPeaceful":     true,
+    "hasDialogue":    true,
+    "dialogueLines": [
+      "My forge is cold. No iron to work.",
+      "Dungeon's cursed the supply routes.",
+      "Find a weapon down there. They're not pretty but they'll hold.",
+      "Aim for the joints on the bigger ones."
+    ]
+  },
+
+  // ── Village NPCs (shop / interactive) ─────────────────────────────────────
   {
     "id": "npc_blacksmith",
     "name": "Blacksmith",
@@ -68,16 +147,6 @@
       { "id": "barter",   "label": "What have you got for sale?", "action": "open_shop" },
       { "id": "farewell", "label": "Farewell.",                   "action": "close"     }
     ]
-  },
-  {
-    "id": "item_bandage",
-    "name": "Linen Bandage",
-    "spriteKey": "item_bandage",
-    "colorTint": "#EEEECC",
-    "isItem": true,
-    "itemType": "Consumable",
-    "healAmount": 8,
-    "value": 5
   },
   {
     "id": "npc_herbalist",
@@ -168,46 +237,5 @@
         "Ah, the smith's kid! How is your father?"
       ]
     }
-  },
-  {
-    "id": "item_empty_bucket",
-    "name": "Empty Bucket",
-    "spriteKey": "item_bucket",
-    "colorTint": "#886644",
-    "isItem": true,
-    "itemType": "Consumable"
-  },
-  {
-    "id": "item_water_bucket",
-    "name": "Bucket of Water",
-    "spriteKey": "item_bucket_water",
-    "colorTint": "#4488EE",
-    "isItem": true,
-    "itemType": "Consumable"
-  },
-  {
-    "id": "item_log",
-    "name": "Wood Log",
-    "spriteKey": "item_log",
-    "colorTint": "#6B4020",
-    "isItem": true,
-    "itemType": "Consumable"
-  },
-  {
-    "id": "item_plank",
-    "name": "Wood Plank",
-    "spriteKey": "item_plank",
-    "colorTint": "#8B6030",
-    "isItem": true,
-    "itemType": "Consumable"
-  },
-  {
-    "id": "item_axe",
-    "name": "Lumber Axe",
-    "spriteKey": "item_axe",
-    "colorTint": "#AAAAAA",
-    "isItem": true,
-    "itemType": "Weapon",
-    "attackBonus": 2
   }
 ]

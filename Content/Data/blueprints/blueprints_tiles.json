@@ -1,0 +1,106 @@
+[
+  // ── Village tiles ─────────────────────────────────────────────────────────
+  {
+    "id":             "tile_grass",
+    "name":           "Grass",
+    "spriteKey":      "tile_grass",
+    "colorTint":      "#3A7A3A",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_dirt",
+    "name":           "Dirt Path",
+    "spriteKey":      "tile_dirt",
+    "colorTint":      "#8B6914",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_cobblestone",
+    "name":           "Cobblestone",
+    "spriteKey":      "tile_cobblestone",
+    "colorTint":      "#888880",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wood_floor",
+    "name":           "Wooden Floor",
+    "spriteKey":      "tile_wood_floor",
+    "colorTint":      "#8B6030",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wood_wall",
+    "name":           "Wooden Wall",
+    "spriteKey":      "tile_wood_wall",
+    "colorTint":      "#6B4020",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_well",
+    "name":           "Village Well",
+    "spriteKey":      "tile_well",
+    "colorTint":      "#6688AA",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+
+  // ── Dungeon tiles ─────────────────────────────────────────────────────────
+  {
+    "id":             "tile_floor",
+    "name":           "Stone Floor",
+    "spriteKey":      "tile_floor",
+    "colorTint":      "#555555",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_wall",
+    "name":           "Stone Wall",
+    "spriteKey":      "tile_wall",
+    "colorTint":      "#AAAAAA",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_door_closed",
+    "name":           "Closed Door",
+    "spriteKey":      "tile_door_closed",
+    "colorTint":      "#AA7733",
+    "blocksMovement": true,
+    "isTile":         true
+  },
+  {
+    "id":             "tile_stairs_down",
+    "name":           "Stairs Down",
+    "spriteKey":      "tile_stairs_down",
+    "colorTint":      "#FFDD88",
+    "blocksMovement": false,
+    "isTile":         true,
+    "isStairs":       true
+  },
+
+  // ── Swamp tiles ───────────────────────────────────────────────────────────
+  {
+    "id":             "tile_swamp",
+    "name":           "Swamp",
+    "spriteKey":      "tile_swamp",
+    "colorTint":      "#3B5A2B",
+    "blocksMovement": false,
+    "isTile":         true
+  },
+
+  // ── River ─────────────────────────────────────────────────────────────────
+  {
+    "id": "env_river_tile",
+    "name": "River",
+    "spriteKey": "env_river",
+    "colorTint": "#2244EE",
+    "blocksMovement": true,
+    "isTile": true
+  }
+]

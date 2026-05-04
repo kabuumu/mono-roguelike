@@ -17,6 +17,7 @@ crash.log
 
 # Claude Code local settings
 .claude/settings.local.json
+.superpowers/
 
 # Temporary/scratch files
 test.png

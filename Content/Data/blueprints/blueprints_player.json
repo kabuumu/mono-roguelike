@@ -1,0 +1,15 @@
+[
+  {
+    "id":             "player",
+    "name":           "Adventurer",
+    "spriteKey":      "creature_player",
+    "colorTint":      "#00FF88",
+    "blocksMovement": true,
+    "maxHealth":      30,
+    "attack":         3,
+    "defense":        0,
+    "hasInventory":   true,
+    "inventorySlots": 10,
+    "hasEquipment":   true
+  }
+]

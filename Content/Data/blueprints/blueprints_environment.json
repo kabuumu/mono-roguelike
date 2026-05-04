@@ -1,0 +1,31 @@
+[
+  {
+    "id": "env_forge",
+    "name": "Village Forge",
+    "spriteKey": "env_forge",
+    "colorTint": "#884444",
+    "blocksMovement": true
+  },
+  {
+    "id": "env_hut",
+    "name": "Villager Hut",
+    "spriteKey": "env_hut",
+    "colorTint": "#A07040",
+    "blocksMovement": true
+  },
+  {
+    "id": "env_tree",
+    "name": "Tree",
+    "spriteKey": "env_tree",
+    "colorTint": "#22AA22",
+    "blocksMovement": true
+  },
+  {
+    "id": "env_swamp_tree",
+    "name": "Swamp Tree",
+    "spriteKey": "env_swamp_tree",
+    "colorTint": "#2A4A1A",
+    "blocksMovement": true,
+    "isTile": true
+  }
+]
