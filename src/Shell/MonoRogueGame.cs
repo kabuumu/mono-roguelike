@@ -225,6 +225,24 @@ public sealed class MonoRogueGame : Game
                 }
                 base.Update(gameTime); return;
             }
+            if (_input.WasPressed(Keys.E))
+            {
+                if (player?.Inventory != null && _state.InventorySelectedIndex < itemCount)
+                {
+                    var selectedId = player.Inventory.Items[_state.InventorySelectedIndex];
+                    if (_state.Entities.TryGetValue(selectedId, out var selectedItem) &&
+                        selectedItem.Item?.Type != ItemType.Consumable)
+                    {
+                        // Keep inventory open so player can see the change
+                        ExecutePlayerIntent(new EquipItemIntent(_state.PlayerEntityId, selectedId));
+                    }
+                    else
+                    {
+                        _state = _state.AppendMessage("You can't equip that.");
+                    }
+                }
+                base.Update(gameTime); return;
+            }
             // Inventory is open — swallow all other input so the world doesn't move
             base.Update(gameTime); return;
         }
