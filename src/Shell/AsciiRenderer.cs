@@ -372,7 +372,7 @@ public sealed class AsciiRenderer
         if (player?.Inventory is null) return;
 
         const int boxW   = 400;
-        const int boxH   = 500;
+        const int boxH   = 580;
         int boxX  = (vpW - boxW) / 2;
         int boxY  = (vpH - boxH) / 2;
         int innerX = boxX + 24;
@@ -392,7 +392,29 @@ public sealed class AsciiRenderer
         Print($"Gold: {player.Inventory.Gold}g", innerX, drawY, TextPrimary);
         drawY += 30;
 
-        // Concrete items (equipable / consumable entity references) — selectable
+        // ── Equipped section ──────────────────────────────────────────────────
+        Print("Equipped:", innerX, drawY, TextDim);
+        drawY += 24;
+
+        var equip = player.Equipment;
+
+        string weaponName = equip?.WeaponId is Guid wId &&
+            state.Entities.TryGetValue(wId, out var wEnt)
+            ? wEnt.Identity?.Name ?? "Unknown"
+            : "—";
+
+        string armorName = equip?.ArmorId is Guid aId &&
+            state.Entities.TryGetValue(aId, out var aEnt)
+            ? aEnt.Identity?.Name ?? "Unknown"
+            : "—";
+
+        Print($"  Weapon: {weaponName}", innerX, drawY, TextSecondary); drawY += 22;
+        Print($"  Armor:  {armorName}", innerX, drawY, TextSecondary); drawY += 22;
+        drawY += 8;
+        DrawRect(innerX, drawY, boxW - 48, 1, Separator);
+        drawY += 12;
+
+        // ── Items list ────────────────────────────────────────────────────────
         Print("Items:", innerX, drawY, TextDim);
         drawY += 24;
 
@@ -405,18 +427,22 @@ public sealed class AsciiRenderer
         {
             for (int i = 0; i < player.Inventory.Items.Length; i++)
             {
-                var itemId  = player.Inventory.Items[i];
-                var itemEnt = state.Entities.TryGetValue(itemId, out var ie) ? ie : null;
-                var name    = itemEnt?.Identity?.Name ?? "Unknown Item";
-                bool sel    = i == selectedIndex;
+                var itemId     = player.Inventory.Items[i];
+                var itemEnt    = state.Entities.TryGetValue(itemId, out var ie) ? ie : null;
+                var name       = itemEnt?.Identity?.Name ?? "Unknown Item";
+                bool isEquipped = player.Equipment?.WeaponId == itemId ||
+                                  player.Equipment?.ArmorId  == itemId;
+                bool sel        = i == selectedIndex;
+
+                string prefix = isEquipped ? "*" : " ";
                 if (sel)
                 {
                     DrawRect(boxX + 4, drawY - 2, boxW - 8, 22, new Color(80, 60, 20, 180));
-                    Print($"> {name}", innerX - 4, drawY, TextPrimary);
+                    Print($">{prefix} {name}", innerX - 4, drawY, TextPrimary);
                 }
                 else
                 {
-                    Print($"  {name}", innerX, drawY, TextSecondary);
+                    Print($" {prefix} {name}", innerX, drawY, TextSecondary);
                 }
                 drawY += 24;
             }
@@ -444,7 +470,7 @@ public sealed class AsciiRenderer
         }
 
         // Key hints at the bottom
-        Print("[Up/Down] Select item   [U/Enter] Use   [I/ESC] Close", boxX + 8, boxY + boxH - 24, TextDim);
+        Print("[Up/Down] Select   [E] Equip/Unequip   [U/Enter] Use   [I/ESC] Close", boxX + 8, boxY + boxH - 24, TextDim);
     }
 
     // ── Interaction target highlight ──────────────────────────────────────────
