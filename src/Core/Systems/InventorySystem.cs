@@ -128,7 +128,7 @@ public static class InventorySystem
             if (!equipper.Inventory.Items.Contains(intent.ItemId)) continue;
 
             var itemType = item.Item?.Type;
-            if (itemType == ItemType.Consumable)
+            if (itemType == ItemType.Consumable || itemType is null)
             {
                 events.Add(new MessageLoggedEvent("You can't equip that."));
                 continue;

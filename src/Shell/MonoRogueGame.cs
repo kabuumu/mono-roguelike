@@ -230,16 +230,9 @@ public sealed class MonoRogueGame : Game
                 if (player?.Inventory != null && _state.InventorySelectedIndex < itemCount)
                 {
                     var selectedId = player.Inventory.Items[_state.InventorySelectedIndex];
-                    if (_state.Entities.TryGetValue(selectedId, out var selectedItem) &&
-                        selectedItem.Item?.Type != ItemType.Consumable)
-                    {
-                        // Keep inventory open so player can see the change
-                        ExecutePlayerIntent(new EquipItemIntent(_state.PlayerEntityId, selectedId));
-                    }
-                    else
-                    {
-                        _state = _state.AppendMessage("You can't equip that.");
-                    }
+                    // Keep inventory open so player can see the change.
+                    // ProcessEquipItem owns all validation and rejection messages.
+                    ExecutePlayerIntent(new EquipItemIntent(_state.PlayerEntityId, selectedId));
                 }
                 base.Update(gameTime); return;
             }

@@ -274,6 +274,10 @@ public sealed class InventorySystemTests
             u.ItemId == oldWeapon.Id && u.Slot == EquipSlot.Weapon);
         Assert.Contains(events, e => e is ItemEquippedEvent eq &&
             eq.ItemId == newWeapon.Id && eq.Slot == EquipSlot.Weapon);
+        // Unequip must precede equip so Reducer applies them in correct order
+        int unequipIdx = events.ToList().FindIndex(e => e is ItemUnequippedEvent);
+        int equipIdx   = events.ToList().FindIndex(e => e is ItemEquippedEvent);
+        Assert.True(unequipIdx < equipIdx);
     }
 
     [Fact]
