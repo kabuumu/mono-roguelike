@@ -35,6 +35,7 @@ public static class Reducer
                 ItemPickedUpEvent     pickup  => ApplyItemPickedUp(state,  pickup),
                 ItemUsedEvent         used    => ApplyItemUsed(state,    used),
                 ItemEquippedEvent     equip   => ApplyItemEquipped(state, equip),
+                ItemUnequippedEvent   unequip => ApplyItemUnequipped(state, unequip),
                 InventoryChangedEvent inv     => ApplyInventoryChanged(state, inv),
                 QuestCompletedEvent   quest   => ApplyQuestCompleted(state, quest),
                 QuestProgressedEvent  prog    => ApplyQuestProgressed(state, prog),
@@ -209,6 +210,19 @@ public static class Reducer
 
         var updated = equipper with { Equipment = newEquip };
         return state with { Entities = state.Entities.SetItem(evt.EquipperId, updated) };
+    }
+
+    private static GameState ApplyItemUnequipped(GameState state, ItemUnequippedEvent evt)
+    {
+        if (!state.Entities.TryGetValue(evt.EntityId, out var entity)) return state;
+        if (entity.Equipment is null) return state;
+
+        var newEquip = evt.Slot == EquipSlot.Weapon
+            ? entity.Equipment with { WeaponId = null }
+            : entity.Equipment with { ArmorId  = null };
+
+        var updated = entity with { Equipment = newEquip };
+        return state with { Entities = state.Entities.SetItem(evt.EntityId, updated) };
     }
 
     // ── Inventory Changes ──────────────────────────────────────────────────────

@@ -248,6 +248,57 @@ public sealed class ReducerTests
         Assert.Equal(armor.Id, next.Entities[player.Id].Equipment!.ArmorId);
     }
 
+    [Fact]
+    public void ItemUnequippedEvent_clears_weapon_slot()
+    {
+        var weapon = MakeWeapon(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(weapon.Id), MaxSlots: 10),
+            Equipment = new EquipmentComponent(WeaponId: weapon.Id)
+        };
+        var state = MakeState(20, 20, player, weapon);
+
+        var next = Reduce(state, new ItemUnequippedEvent(player.Id, weapon.Id, EquipSlot.Weapon));
+
+        Assert.Null(next.Entities[player.Id].Equipment!.WeaponId);
+    }
+
+    [Fact]
+    public void ItemUnequippedEvent_clears_armor_slot()
+    {
+        var armor  = MakeArmor(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(armor.Id), MaxSlots: 10),
+            Equipment = new EquipmentComponent(ArmorId: armor.Id)
+        };
+        var state = MakeState(20, 20, player, armor);
+
+        var next = Reduce(state, new ItemUnequippedEvent(player.Id, armor.Id, EquipSlot.Armor));
+
+        Assert.Null(next.Entities[player.Id].Equipment!.ArmorId);
+    }
+
+    [Fact]
+    public void ItemUnequippedEvent_item_stays_in_inventory()
+    {
+        var weapon = MakeWeapon(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(weapon.Id), MaxSlots: 10),
+            Equipment = new EquipmentComponent(WeaponId: weapon.Id)
+        };
+        var state = MakeState(20, 20, player, weapon);
+
+        var next = Reduce(state, new ItemUnequippedEvent(player.Id, weapon.Id, EquipSlot.Weapon));
+
+        Assert.Contains(weapon.Id, next.Entities[player.Id].Inventory!.Items);
+    }
+
     // ── Inventory resources ────────────────────────────────────────────────────
 
     [Fact]
