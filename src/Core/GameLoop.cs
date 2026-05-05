@@ -49,6 +49,7 @@ public static class GameLoop
             var spawns    = intents.OfType<SpawnIntent>().ToImmutableArray();
             var pickups   = intents.OfType<PickupIntent>().ToImmutableArray();
             var useItems  = intents.OfType<UseItemIntent>().ToImmutableArray();
+            var equips    = intents.OfType<EquipItemIntent>().ToImmutableArray();
             var interacts = intents.OfType<InteractIntent>().ToImmutableArray();
             var attacks   = intents.OfType<AttackIntent>().ToImmutableArray();
             var trades    = intents.OfType<TradeIntent>().ToImmutableArray();
@@ -60,6 +61,7 @@ public static class GameLoop
             allEvents.AddRange(SpawnSystem.Process(state, spawns, registry));
             allEvents.AddRange(InventorySystem.ProcessPickups(state, pickups));
             allEvents.AddRange(InventorySystem.ProcessUseItem(state, useItems));
+            allEvents.AddRange(InventorySystem.ProcessEquipItem(state, equips));
             allEvents.AddRange(InteractionSystem.Process(state, interacts));
 
             // Phase 2b: combat and economy
