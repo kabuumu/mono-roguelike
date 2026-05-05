@@ -212,4 +212,117 @@ public sealed class InventorySystemTests
 
         Assert.Empty(events);
     }
+
+    // ── EquipItem ─────────────────────────────────────────────────────────────
+
+    private static ImmutableArray<GameEvent> TryEquip(
+        GameState state, Entity equipper, Guid itemId) =>
+        InventorySystem.ProcessEquipItem(
+            state,
+            ImmutableArray.Create(new EquipItemIntent(equipper.Id, itemId)));
+
+    [Fact]
+    public void EquipItem_weapon_into_empty_slot_emits_equipped_event()
+    {
+        var weapon = MakeWeapon(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(weapon.Id), MaxSlots: 10)
+        };
+        var state = MakeState(20, 20, player, weapon);
+
+        var events = TryEquip(state, player, weapon.Id);
+
+        Assert.Contains(events, e => e is ItemEquippedEvent eq &&
+            eq.Slot == EquipSlot.Weapon && eq.ItemId == weapon.Id);
+    }
+
+    [Fact]
+    public void EquipItem_armor_into_empty_slot_emits_equipped_event()
+    {
+        var armor  = MakeArmor(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(armor.Id), MaxSlots: 10)
+        };
+        var state = MakeState(20, 20, player, armor);
+
+        var events = TryEquip(state, player, armor.Id);
+
+        Assert.Contains(events, e => e is ItemEquippedEvent eq &&
+            eq.Slot == EquipSlot.Armor && eq.ItemId == armor.Id);
+    }
+
+    [Fact]
+    public void EquipItem_weapon_when_slot_occupied_emits_unequip_then_equip()
+    {
+        var oldWeapon = MakeWeapon(new Position(0, 0));
+        var newWeapon = MakeWeapon(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(oldWeapon.Id).Add(newWeapon.Id), MaxSlots: 10),
+            Equipment = new EquipmentComponent(WeaponId: oldWeapon.Id)
+        };
+        var state = MakeState(20, 20, player, oldWeapon, newWeapon);
+
+        var events = TryEquip(state, player, newWeapon.Id);
+
+        Assert.Contains(events, e => e is ItemUnequippedEvent u &&
+            u.ItemId == oldWeapon.Id && u.Slot == EquipSlot.Weapon);
+        Assert.Contains(events, e => e is ItemEquippedEvent eq &&
+            eq.ItemId == newWeapon.Id && eq.Slot == EquipSlot.Weapon);
+    }
+
+    [Fact]
+    public void EquipItem_already_equipped_item_emits_unequip_only()
+    {
+        var weapon = MakeWeapon(new Position(0, 0));
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(weapon.Id), MaxSlots: 10),
+            Equipment = new EquipmentComponent(WeaponId: weapon.Id)
+        };
+        var state = MakeState(20, 20, player, weapon);
+
+        var events = TryEquip(state, player, weapon.Id);
+
+        Assert.Contains(events, e => e is ItemUnequippedEvent u &&
+            u.ItemId == weapon.Id && u.Slot == EquipSlot.Weapon);
+        Assert.DoesNotContain(events, e => e is ItemEquippedEvent);
+    }
+
+    [Fact]
+    public void EquipItem_consumable_emits_cannot_equip_message()
+    {
+        var potion = MakeItem(new Position(0, 0), healAmount: 5);
+        var player = MakePlayer(new Position(3, 3)) with
+        {
+            Inventory = new InventoryComponent(
+                ImmutableArray<Guid>.Empty.Add(potion.Id), MaxSlots: 10)
+        };
+        var state = MakeState(20, 20, player, potion);
+
+        var events = TryEquip(state, player, potion.Id);
+
+        Assert.DoesNotContain(events, e => e is ItemEquippedEvent);
+        Assert.Contains(events, e => e is MessageLoggedEvent m &&
+            m.Message.Contains("can't equip", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void EquipItem_not_in_inventory_is_ignored()
+    {
+        var weapon = MakeWeapon(new Position(0, 0));
+        // Player has no items in inventory
+        var player = MakePlayer(new Position(3, 3));
+        var state  = MakeState(20, 20, player, weapon);
+
+        var events = TryEquip(state, player, weapon.Id);
+
+        Assert.Empty(events);
+    }
 }

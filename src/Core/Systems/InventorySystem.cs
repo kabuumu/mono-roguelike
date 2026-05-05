@@ -103,6 +103,63 @@ public static class InventorySystem
         return events.ToImmutable();
     }
 
+    // ── Equip / Unequip ──────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Equips or unequips an item from the entity's inventory.
+    /// - Consumables: rejected with a message.
+    /// - Item already equipped in its slot: unequipped back to inventory (slot cleared).
+    /// - Item not equipped, slot empty: equipped.
+    /// - Item not equipped, slot occupied: old item unequipped, new item equipped.
+    /// The item must already be in the entity's InventoryComponent.Items.
+    /// </summary>
+    public static ImmutableArray<GameEvent> ProcessEquipItem(
+        GameState                       state,
+        ImmutableArray<EquipItemIntent> intents)
+    {
+        var events = ImmutableArray.CreateBuilder<GameEvent>();
+
+        foreach (var intent in intents)
+        {
+            if (!state.Entities.TryGetValue(intent.EntityId, out var equipper)) continue;
+            if (equipper.Inventory is null)  continue;
+            if (equipper.Equipment is null)  continue;
+            if (!state.Entities.TryGetValue(intent.ItemId, out var item)) continue;
+            if (!equipper.Inventory.Items.Contains(intent.ItemId)) continue;
+
+            var itemType = item.Item?.Type;
+            if (itemType == ItemType.Consumable)
+            {
+                events.Add(new MessageLoggedEvent("You can't equip that."));
+                continue;
+            }
+
+            var slot      = itemType == ItemType.Weapon ? EquipSlot.Weapon : EquipSlot.Armor;
+            var currentId = slot == EquipSlot.Weapon
+                ? equipper.Equipment.WeaponId
+                : equipper.Equipment.ArmorId;
+            var name = item.Identity?.Name ?? "item";
+
+            if (currentId == intent.ItemId)
+            {
+                // Toggle: already equipped — unequip it
+                events.Add(new ItemUnequippedEvent(intent.EntityId, intent.ItemId, slot));
+                events.Add(new MessageLoggedEvent($"You unequip the {name}."));
+            }
+            else
+            {
+                // Swap out current occupant first (if any)
+                if (currentId.HasValue)
+                    events.Add(new ItemUnequippedEvent(intent.EntityId, currentId.Value, slot));
+
+                events.Add(new ItemEquippedEvent(intent.EntityId, intent.ItemId, slot));
+                events.Add(new MessageLoggedEvent($"You equip the {name}."));
+            }
+        }
+
+        return events.ToImmutable();
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     /// <summary>
