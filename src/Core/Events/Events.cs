@@ -44,6 +44,9 @@ public sealed record ItemUsedEvent(Guid UserId, Guid ItemId, int HealAmount) : G
 /// <summary>An item was equipped into a weapon or armour slot.</summary>
 public sealed record ItemEquippedEvent(Guid EquipperId, Guid ItemId, EquipSlot Slot) : GameEvent;
 
+/// <summary>An item was unequipped from a slot. It remains in InventoryComponent.Items.</summary>
+public sealed record ItemUnequippedEvent(Guid EntityId, Guid ItemId, EquipSlot Slot) : GameEvent;
+
 /// <summary>A stacked resource quantity changed (e.g. gathering, crafting).</summary>
 public sealed record InventoryChangedEvent(Guid EntityId, string ItemTemplateId, int DeltaQuantity) : GameEvent;
 

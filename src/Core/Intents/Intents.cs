@@ -89,3 +89,12 @@ public sealed record TradeIntent(
     Guid ItemId,
     int  Quantity = 1
 ) : Intent;
+
+/// <summary>
+/// Player wants to equip or unequip an item from their inventory.
+/// If the item is already in its slot, it is unequipped back to inventory.
+/// If the slot is occupied by a different item, that item is swapped back
+/// to inventory before the new one is equipped.
+/// Consumables are rejected with a message.
+/// </summary>
+public sealed record EquipItemIntent(Guid EntityId, Guid ItemId) : Intent;
