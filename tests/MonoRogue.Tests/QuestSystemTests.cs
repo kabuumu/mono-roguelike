@@ -540,5 +540,6 @@ public sealed class QuestBuildTests
         Assert.Equal("quest_fetch_water", quest.Id);
         Assert.Null(quest.Objectives);
         Assert.Equal("npc_blacksmith", quest.TurnInNpcId);
+        Assert.True(quest.RequiredItems.ContainsKey("item_water_bucket"));
     }
 }
