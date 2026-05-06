@@ -1,0 +1,17 @@
+[
+  {
+    "id": "quest_cull_boars",
+    "name": "Boar Problem",
+    "description": "Boars keep raiding my camp. Kill four of them and maybe I'll get some sleep.",
+    "requiredItems": {},
+    "completionText": "Good. Peace at last. Here, take this.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_boar",
+        "requiredCount": 4
+      }
+    ],
+    "rewardGold": 35
+  }
+]

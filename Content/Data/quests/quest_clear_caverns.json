@@ -1,0 +1,18 @@
+[
+  {
+    "id": "quest_clear_caverns",
+    "name": "Clear the Caverns",
+    "description": "Goblins overran my dig site. Kill five of them and I can finally get back to work.",
+    "requiredItems": {},
+    "completionText": "The site is clear! Take this as thanks — I found it in the rocks.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_goblin",
+        "requiredCount": 5
+      }
+    ],
+    "rewardGold": 40,
+    "rewardItems": ["item_chainmail"]
+  }
+]

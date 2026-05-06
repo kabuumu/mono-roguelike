@@ -1,0 +1,17 @@
+[
+  {
+    "id": "quest_orc_cleansing",
+    "name": "Drive Out the Orcs",
+    "description": "Orcs are smashing through the inner sanctum. Kill four of them before they destroy what's left.",
+    "requiredItems": {},
+    "completionText": "The sanctum is safe. The inscriptions survived. You have my gratitude.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_orc",
+        "requiredCount": 4
+      }
+    ],
+    "rewardGold": 60
+  }
+]

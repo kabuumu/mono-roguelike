@@ -1,0 +1,18 @@
+[
+  {
+    "id": "quest_swamp_trolls",
+    "name": "Troll Toll",
+    "description": "Three trolls have staked out the paths through the swamp. Kill them and the way opens up.",
+    "requiredItems": {},
+    "completionText": "Finally. I can move around again. Here — I've been saving this.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_troll",
+        "requiredCount": 3
+      }
+    ],
+    "rewardGold": 50,
+    "rewardItems": ["item_health_potion"]
+  }
+]
