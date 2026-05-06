@@ -550,6 +550,24 @@ public sealed class MonoRogueGame : Game
             case "open_shop":
                 _state = _state with { ActiveBarter = new BarterState(npcId, npcName) };
                 break;
+
+            case string s when s.StartsWith("give_quest:"):
+            {
+                var questId          = s["give_quest:".Length..];
+                var alreadyActive    = _state.ActiveQuests?.Any(q => q.Id == questId) ?? false;
+                var alreadyCompleted = _state.CompletedQuestIds?.Contains(questId) ?? false;
+                if (!alreadyActive && !alreadyCompleted &&
+                    _registry.Quests.TryGetValue(questId, out var qTpl))
+                {
+                    var quest = DataRegistry.BuildQuest(qTpl);
+                    _state = _state with
+                    {
+                        ActiveQuests = (_state.ActiveQuests ?? ImmutableList<Quest>.Empty).Add(quest)
+                    };
+                    _state = _state.AppendMessage($"Quest accepted: \"{quest.Name}\".");
+                }
+                break;
+            }
         }
     }
 
