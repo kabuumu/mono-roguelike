@@ -165,24 +165,7 @@ public static class WorldGenerator
                 foreach (var qId in bg.StartingQuests)
                 {
                     if (registry.Quests.TryGetValue(qId, out var qTpl))
-                    {
-                        var reqItems = qTpl.RequiredItems?.ToImmutableDictionary()
-                                       ?? ImmutableDictionary<string, int>.Empty;
-
-                        ImmutableArray<QuestObjective>? objectives = null;
-                        if (qTpl.Objectives?.Length > 0)
-                        {
-                            objectives = qTpl.Objectives
-                                .Select(o => new QuestObjective(o.Type, o.TargetId, o.RequiredCount))
-                                .ToImmutableArray();
-                        }
-
-                        activeQuests.Add(new Quest(
-                            qTpl.Id, qTpl.Name, qTpl.Description, reqItems,
-                            qTpl.CompletionText ?? "",
-                            Objectives:  objectives,
-                            TurnInNpcId: qTpl.TurnInNpcId));
-                    }
+                        activeQuests.Add(DataRegistry.BuildQuest(qTpl));
                 }
             }
 

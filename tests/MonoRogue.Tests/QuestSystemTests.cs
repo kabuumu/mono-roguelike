@@ -495,3 +495,50 @@ public sealed class QuestTurnInPipelineTests
         Assert.Contains(QuestId, newState.CompletedQuestIds ?? ImmutableHashSet<string>.Empty);
     }
 }
+
+// ── DataRegistry.BuildQuest helper ────────────────────────────────────────────
+
+public sealed class QuestBuildTests
+{
+    [Fact]
+    public void BuildQuest_converts_kill_quest_template_correctly()
+    {
+        var tpl = new QuestTemplate(
+            Id:            "quest_cull_boars",
+            Name:          "Boar Problem",
+            Description:   "Kill 4 boars.",
+            RequiredItems: new Dictionary<string, int>(),
+            CompletionText: "Thank you!",
+            Objectives:    [new QuestObjectiveTemplate("kill_target", "creature_boar", 4)],
+            RewardGold:    35);
+
+        var quest = DataRegistry.BuildQuest(tpl);
+
+        Assert.Equal("quest_cull_boars", quest.Id);
+        Assert.Equal("Boar Problem", quest.Name);
+        Assert.NotNull(quest.Objectives);
+        Assert.Single(quest.Objectives.Value);
+        Assert.Equal("creature_boar", quest.Objectives.Value[0].TargetId);
+        Assert.Equal(4, quest.Objectives.Value[0].RequiredCount);
+        Assert.Equal("kill_target", quest.Objectives.Value[0].Type);
+    }
+
+    [Fact]
+    public void BuildQuest_handles_null_objectives_for_item_delivery_quest()
+    {
+        var tpl = new QuestTemplate(
+            Id:            "quest_fetch_water",
+            Name:          "Fetch Water",
+            Description:   "Get water.",
+            RequiredItems: new Dictionary<string, int> { ["item_water_bucket"] = 1 },
+            CompletionText: "Thanks!",
+            Objectives:    null,
+            TurnInNpcId:   "npc_blacksmith");
+
+        var quest = DataRegistry.BuildQuest(tpl);
+
+        Assert.Equal("quest_fetch_water", quest.Id);
+        Assert.Null(quest.Objectives);
+        Assert.Equal("npc_blacksmith", quest.TurnInNpcId);
+    }
+}

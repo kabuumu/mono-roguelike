@@ -2,6 +2,7 @@ namespace MonoRogue.Data;
 
 using System.Collections.Immutable;
 using System.Text.Json;
+using MonoRogue.Core.Model;
 
 /// <summary>
 /// Immutable registry of all game data blueprints, loaded once at startup.
@@ -96,4 +97,23 @@ public sealed record DataRegistry(
             ImmutableDictionary<string, FactionTemplate>.Empty,
             ImmutableDictionary<string, QuestTemplate>.Empty,
             ImmutableDictionary<string, AreaTemplate>.Empty);
+
+    /// <summary>Converts a QuestTemplate (JSON data) into a runtime Quest record.</summary>
+    public static Quest BuildQuest(QuestTemplate tpl)
+    {
+        var reqItems = tpl.RequiredItems?.ToImmutableDictionary()
+                       ?? ImmutableDictionary<string, int>.Empty;
+
+        ImmutableArray<QuestObjective>? objectives = null;
+        if (tpl.Objectives?.Length > 0)
+            objectives = tpl.Objectives
+                .Select(o => new QuestObjective(o.Type, o.TargetId, o.RequiredCount))
+                .ToImmutableArray();
+
+        return new Quest(
+            tpl.Id, tpl.Name, tpl.Description, reqItems,
+            tpl.CompletionText ?? "",
+            Objectives:  objectives,
+            TurnInNpcId: tpl.TurnInNpcId);
+    }
 }
