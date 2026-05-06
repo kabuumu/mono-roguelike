@@ -237,5 +237,130 @@
         "Ah, the smith's kid! How is your father?"
       ]
     }
+  },
+  {
+    "id": "npc_hermit",
+    "name": "Old Gareth",
+    "spriteKey": "npc_villager",
+    "colorTint": "#AA9977",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "dialogPool": {
+      "after_quest_completed:quest_cull_boars": [
+        "You did it. Quiet nights again.",
+        "I haven't slept this well in months. The forest is yours to wander."
+      ],
+      "default": [
+        "Didn't think I'd see another soul out here.",
+        "These boars have been raiding my camp for weeks. I can't keep this up.",
+        "If you're brave enough, kill four of them. I'll make it worth your while."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "hunt_boars", "label": "I'll handle the boars.", "action": "give_quest:quest_cull_boars" },
+      { "id": "farewell",   "label": "Farewell.",              "action": "close" }
+    ]
+  },
+  {
+    "id": "npc_prospector",
+    "name": "Yenna the Prospector",
+    "spriteKey": "npc_villager",
+    "colorTint": "#CCAA66",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 15,
+    "startingGold": 60,
+    "shopInventory": [
+      "item_chainmail",
+      "item_health_potion",
+      "item_health_potion"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_clear_caverns": [
+        "The site is mine again. I can finally finish what I started.",
+        "Come find me when you need gear - I'll keep a good stock from now on."
+      ],
+      "default": [
+        "Goblins drove me out of my own dig site. Five of those wretches, at least.",
+        "Clear them out and I'll give you something from my pack.",
+        "I've also got gear to sell, if you need it."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "clear_cave",  "label": "I'll clear the goblins.",    "action": "give_quest:quest_clear_caverns" },
+      { "id": "barter",      "label": "What are you selling?",      "action": "open_shop" },
+      { "id": "farewell",    "label": "Farewell.",                   "action": "close" }
+    ]
+  },
+  {
+    "id": "npc_scholar",
+    "name": "Brother Aldric",
+    "spriteKey": "npc_villager",
+    "colorTint": "#AAAAEE",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 15,
+    "startingGold": 80,
+    "shopInventory": [
+      "item_ancient_scroll",
+      "item_ancient_scroll",
+      "item_health_potion"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_orc_cleansing": [
+        "The sanctum is quiet again. The inscriptions are intact.",
+        "I'll be here for months yet. Come back if you need supplies."
+      ],
+      "default": [
+        "I've been studying these ruins for six months. Remarkable civilisation.",
+        "The orcs arrived last week. Four of them are smashing through the inner sanctum.",
+        "Kill them and I'll share what I've found - and I have scrolls that are worth carrying."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "orc_cleanse", "label": "I'll drive out the orcs.",   "action": "give_quest:quest_orc_cleansing" },
+      { "id": "barter",      "label": "What do you have to sell?",  "action": "open_shop" },
+      { "id": "farewell",    "label": "Farewell.",                   "action": "close" }
+    ]
+  },
+  {
+    "id": "npc_exile",
+    "name": "Willa the Exile",
+    "spriteKey": "npc_villager",
+    "colorTint": "#99BB99",
+    "blocksMovement": true,
+    "isPeaceful": true,
+    "hasDialogue": true,
+    "hasInventory": true,
+    "inventorySlots": 15,
+    "startingGold": 30,
+    "shopInventory": [
+      "item_swamp_herb",
+      "item_swamp_herb",
+      "item_swamp_herb",
+      "item_bandage",
+      "item_bandage"
+    ],
+    "dialogPool": {
+      "after_quest_completed:quest_swamp_trolls": [
+        "First time in years I've walked the south path without looking over my shoulder.",
+        "The herbs grow thick near the old stone. Come back whenever you need patching up."
+      ],
+      "default": [
+        "Millhaven threw me out. The swamp kept me alive. I don't owe either of them a thing.",
+        "Three trolls have blocked every path through here. I'm running low on everything.",
+        "Clear them and I'll sell you whatever I've got. Herbs mostly, but they work."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "troll_toll", "label": "I'll deal with the trolls.", "action": "give_quest:quest_swamp_trolls" },
+      { "id": "barter",     "label": "Show me what you have.",     "action": "open_shop" },
+      { "id": "farewell",   "label": "Farewell.",                   "action": "close" }
+    ]
   }
 ]
