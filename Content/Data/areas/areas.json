@@ -19,7 +19,9 @@
       { "templateId": "item_health_potion", "chance": 0.3 },
       { "templateId": "item_wolf_pelt", "chance": 0.2 }
     ],
-    "npcs": [],
+    "npcs": [
+      { "templateId": "npc_hermit", "count": [1, 1] }
+    ],
     "entryMessage": "You enter the Darkwood Forest. The trees loom overhead."
   },
   {
@@ -39,7 +41,9 @@
       { "templateId": "item_health_potion", "chance": 0.4 },
       { "templateId": "item_sword", "chance": 0.15 }
     ],
-    "npcs": [],
+    "npcs": [
+      { "templateId": "npc_prospector", "count": [1, 1] }
+    ],
     "entryMessage": "You descend into the Crystal Caverns."
   },
   {
@@ -61,7 +65,8 @@
       { "templateId": "item_dagger", "chance": 0.15 }
     ],
     "npcs": [
-      { "templateId": "npc_trader", "count": [0, 1] }
+      { "templateId": "npc_trader", "count": [0, 1] },
+      { "templateId": "npc_scholar", "count": [1, 1] }
     ],
     "entryMessage": "Crumbling stone pillars mark the entrance to the Ancient Ruins."
   },
@@ -84,7 +89,9 @@
     "items": [
       { "templateId": "item_health_potion", "chance": 0.4 }
     ],
-    "npcs": [],
+    "npcs": [
+      { "templateId": "npc_exile", "count": [1, 1] }
+    ],
     "entryMessage": "The air turns thick and humid as you wade into the Fetid Swamp."
   }
 ]
