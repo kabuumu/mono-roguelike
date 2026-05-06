@@ -165,5 +165,27 @@
     "colorTint": "#8B6030",
     "isItem": true,
     "itemType": "Consumable"
+  },
+  {
+    "id":             "item_ancient_scroll",
+    "name":           "Ancient Scroll",
+    "spriteKey":      "item_scroll",
+    "colorTint":      "#FFEE99",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "healAmount":     15,
+    "value":          20
+  },
+  {
+    "id":             "item_swamp_herb",
+    "name":           "Swamp Herb",
+    "spriteKey":      "item_herb",
+    "colorTint":      "#88CC44",
+    "blocksMovement": false,
+    "isItem":         true,
+    "itemType":       "Consumable",
+    "healAmount":     12,
+    "value":          8
   }
 ]
