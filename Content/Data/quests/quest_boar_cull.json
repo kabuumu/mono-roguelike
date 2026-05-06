@@ -1,0 +1,17 @@
+[
+  {
+    "id": "quest_boar_cull",
+    "name": "Boars at the Gate",
+    "description": "Boars have been breaking into the food stores at night. Kill three of them.",
+    "requiredItems": {},
+    "completionText": "Good work. The stores are safe for another season.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_boar",
+        "requiredCount": 3
+      }
+    ],
+    "rewardGold": 25
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "quest_cave_scout",
+    "name": "Into the Darkness",
+    "description": "We need to know what lurks in the Crystal Caverns to the east. Enter and kill three rats as proof you made it inside.",
+    "requiredItems": {},
+    "completionText": "You returned. Not everyone does. Here — take this for your courage.",
+    "objectives": [
+      {
+        "type": "kill_target",
+        "targetId": "creature_rat",
+        "requiredCount": 3
+      }
+    ],
+    "rewardGold": 20,
+    "rewardItems": ["item_health_potion"]
+  }
+]
