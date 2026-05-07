@@ -1,5 +1,6 @@
 namespace MonoRogue.Tests;
 
+using System.Linq;
 using MonoRogue.Core.Events;
 using MonoRogue.Core.Model;
 using Xunit;
@@ -227,5 +228,106 @@ public sealed class CombatSkillTests
         var atk = MonoRogue.Core.Systems.CombatSystem.GetEffectiveAttack(state, enemy);
 
         Assert.Equal(4, atk);
+    }
+}
+
+public sealed class BarterSkillTests
+{
+    private static (GameState State, MonoRogue.Core.Intents.TradeIntent Intent) MakeTradeSetup(
+        int barterLevel,
+        int itemValue)
+    {
+        var item = MakeItem(new Position(5, 5), ItemType.Consumable, value: itemValue);
+
+        var seller = new Entity(
+            Id:       Guid.NewGuid(),
+            Identity: new IdentityComponent("Merchant", "npc_merchant"),
+            Inventory: new InventoryComponent(
+                Items: System.Collections.Immutable.ImmutableArray.Create(item.Id),
+                MaxSlots: 10,
+                Gold: 0));
+
+        var barterSkill = new SkillData(
+            Level:         barterLevel,
+            Xp:            0,
+            XpToNextLevel: (barterLevel + 1) * 20);
+
+        var buyer = MakePlayer(Position.Zero) with
+        {
+            Skills    = new SkillsComponent(new SkillData(), new SkillData(), barterSkill),
+            Inventory = new MonoRogue.Core.Model.InventoryComponent(
+                System.Collections.Immutable.ImmutableArray<Guid>.Empty, MaxSlots: 10, Gold: 1000)
+        };
+
+        var state  = MakeState(10, 10, buyer, seller, item);
+        var intent = new MonoRogue.Core.Intents.TradeIntent(buyer.Id, seller.Id, item.Id);
+        return (state, intent);
+    }
+
+    [Fact]
+    public void ProcessTrades_emits_barter_xp_on_successful_trade()
+    {
+        var (state, intent) = MakeTradeSetup(barterLevel: 0, itemValue: 10);
+
+        var events = MonoRogue.Core.Systems.EconomySystem.ProcessTrades(
+            state,
+            System.Collections.Immutable.ImmutableArray.Create(intent));
+
+        Assert.Contains(events, e =>
+            e is MonoRogue.Core.Events.SkillXpGainedEvent xp &&
+            xp.Skill  == SkillType.Barter &&
+            xp.Amount == 5);
+    }
+
+    [Fact]
+    public void ProcessTrades_no_discount_at_barter_level_zero()
+    {
+        var (state, intent) = MakeTradeSetup(barterLevel: 0, itemValue: 100);
+
+        var events = MonoRogue.Core.Systems.EconomySystem.ProcessTrades(
+            state,
+            System.Collections.Immutable.ImmutableArray.Create(intent));
+
+        var trade = events.OfType<MonoRogue.Core.Events.TradeCompletedEvent>().Single();
+        Assert.Equal(100, trade.Cost);
+    }
+
+    [Fact]
+    public void ProcessTrades_applies_5_percent_discount_at_barter_level_1()
+    {
+        var (state, intent) = MakeTradeSetup(barterLevel: 1, itemValue: 100);
+
+        var events = MonoRogue.Core.Systems.EconomySystem.ProcessTrades(
+            state,
+            System.Collections.Immutable.ImmutableArray.Create(intent));
+
+        var trade = events.OfType<MonoRogue.Core.Events.TradeCompletedEvent>().Single();
+        Assert.Equal(95, trade.Cost);
+    }
+
+    [Fact]
+    public void ProcessTrades_applies_20_percent_discount_at_barter_level_4()
+    {
+        var (state, intent) = MakeTradeSetup(barterLevel: 4, itemValue: 100);
+
+        var events = MonoRogue.Core.Systems.EconomySystem.ProcessTrades(
+            state,
+            System.Collections.Immutable.ImmutableArray.Create(intent));
+
+        var trade = events.OfType<MonoRogue.Core.Events.TradeCompletedEvent>().Single();
+        Assert.Equal(80, trade.Cost);
+    }
+
+    [Fact]
+    public void ProcessTrades_minimum_effective_price_is_1_gold()
+    {
+        var (state, intent) = MakeTradeSetup(barterLevel: 100, itemValue: 1);
+
+        var events = MonoRogue.Core.Systems.EconomySystem.ProcessTrades(
+            state,
+            System.Collections.Immutable.ImmutableArray.Create(intent));
+
+        var trade = events.OfType<MonoRogue.Core.Events.TradeCompletedEvent>().Single();
+        Assert.Equal(1, trade.Cost);
     }
 }

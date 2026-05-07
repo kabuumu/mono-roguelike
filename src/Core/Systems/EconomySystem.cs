@@ -46,19 +46,24 @@ public static class EconomySystem
                 continue;
             }
 
+            var barterLevel    = buyer.Skills?.Barter.Level ?? 0;
+            var effectivePrice = totalCost - (totalCost * barterLevel * 5 / 100);
+            if (effectivePrice < 1) effectivePrice = 1;
+
             // Buyer must have enough gold
             var buyerGold = buyer.Inventory?.Gold ?? 0;
-            if (buyerGold < totalCost)
+            if (buyerGold < effectivePrice)
             {
                 events.Add(new MessageLoggedEvent(
-                    $"You need {totalCost} gold. You have {buyerGold}."));
+                    $"You need {effectivePrice} gold. You have {buyerGold}."));
                 continue;
             }
 
             var itemName = item.Identity?.Name ?? "item";
-            events.Add(new TradeCompletedEvent(intent.BuyerId, intent.SellerId, intent.ItemId, totalCost));
+            events.Add(new TradeCompletedEvent(intent.BuyerId, intent.SellerId, intent.ItemId, effectivePrice));
+            events.Add(new SkillXpGainedEvent(intent.BuyerId, SkillType.Barter, 5));
             events.Add(new MessageLoggedEvent(
-                $"You buy {itemName} for {totalCost} gold. ({buyerGold - totalCost} gold remaining)"));
+                $"You buy {itemName} for {effectivePrice} gold. ({buyerGold - effectivePrice} gold remaining)"));
         }
 
         return events.ToImmutable();
