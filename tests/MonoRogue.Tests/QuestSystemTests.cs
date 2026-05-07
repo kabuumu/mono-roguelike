@@ -363,6 +363,62 @@ public sealed class QuestDataIntegrityTests
         Assert.NotNull(fetchWater);
         Assert.Equal("npc_blacksmith", fetchWater.TurnInNpcId);
     }
+
+    [Fact]
+    public void All_six_new_kill_quests_load_from_registry()
+    {
+        var registry = LoadRegistry();
+        string[] expectedIds =
+        [
+            "quest_cull_boars",
+            "quest_clear_caverns",
+            "quest_orc_cleansing",
+            "quest_swamp_trolls",
+            "quest_cave_scout",
+            "quest_boar_cull",
+        ];
+        foreach (var id in expectedIds)
+            Assert.True(registry.Quests.ContainsKey(id), $"{id} not found in registry");
+    }
+
+    [Fact]
+    public void Biome_quests_have_kill_objectives_with_correct_targets()
+    {
+        var registry = LoadRegistry();
+
+        Assert.True(registry.Quests.TryGetValue("quest_cull_boars",    out var q1));
+        Assert.True(registry.Quests.TryGetValue("quest_clear_caverns", out var q2));
+        Assert.True(registry.Quests.TryGetValue("quest_orc_cleansing", out var q3));
+        Assert.True(registry.Quests.TryGetValue("quest_swamp_trolls",  out var q4));
+        Assert.True(registry.Quests.TryGetValue("quest_cave_scout",    out var q5));
+        Assert.True(registry.Quests.TryGetValue("quest_boar_cull",     out var q6));
+
+        Assert.Equal("creature_boar",   q1!.Objectives?[0].TargetId);
+        Assert.Equal("creature_goblin", q2!.Objectives?[0].TargetId);
+        Assert.Equal("creature_orc",    q3!.Objectives?[0].TargetId);
+        Assert.Equal("creature_troll",  q4!.Objectives?[0].TargetId);
+        Assert.Equal("creature_rat",    q5!.Objectives?[0].TargetId);
+        Assert.Equal("creature_boar",   q6!.Objectives?[0].TargetId);
+    }
+
+    [Fact]
+    public void All_four_biome_npc_templates_load_from_registry()
+    {
+        var registry = LoadRegistry();
+        string[] expectedIds = ["npc_hermit", "npc_prospector", "npc_scholar", "npc_exile"];
+        foreach (var id in expectedIds)
+            Assert.True(registry.Templates.ContainsKey(id), $"{id} not found in registry");
+    }
+
+    [Fact]
+    public void New_consumable_items_load_from_registry()
+    {
+        var registry = LoadRegistry();
+        Assert.True(registry.Templates.ContainsKey("item_ancient_scroll"),
+            "item_ancient_scroll not found");
+        Assert.True(registry.Templates.ContainsKey("item_swamp_herb"),
+            "item_swamp_herb not found");
+    }
 }
 
 // ── Full pipeline: bump NPC → dialogue → turn-in ─────────────────────────────
