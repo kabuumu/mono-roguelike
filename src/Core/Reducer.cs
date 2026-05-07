@@ -42,6 +42,7 @@ public static class Reducer
                 TradeCompletedEvent   trade   => ApplyTradeCompleted(state, trade),
                 GoldChangedEvent      gold    => ApplyGoldChanged(state, gold),
                 XpGainedEvent         xp      => ApplyXpGained(state,    xp),
+                SkillXpGainedEvent    skillXp => ApplySkillXpGained(state, skillXp),
                 FovUpdatedEvent  fov     => state with
                 {
                     VisibleTiles  = fov.Visible,
@@ -310,6 +311,46 @@ public static class Reducer
         }
 
         entity = entity with { Level = level with { Xp = newXp } };
+        return state with { Entities = state.Entities.SetItem(evt.EntityId, entity) };
+    }
+
+    private static GameState ApplySkillXpGained(GameState state, SkillXpGainedEvent evt)
+    {
+        if (!state.Entities.TryGetValue(evt.EntityId, out var entity)) return state;
+        if (entity.Skills is null) return state;
+
+        var skills = entity.Skills;
+        var data = evt.Skill switch
+        {
+            SkillType.Melee  => skills.Melee,
+            SkillType.Block  => skills.Block,
+            SkillType.Barter => skills.Barter,
+            _                => null
+        };
+        if (data is null) return state;
+
+        var newXp        = data.Xp + evt.Amount;
+        var newLevel     = data.Level;
+        var newThreshold = data.XpToNextLevel;
+
+        while (newXp >= newThreshold)
+        {
+            newXp        -= newThreshold;
+            newLevel     += 1;
+            newThreshold  = (newLevel + 1) * 20;
+            state = state.AppendMessage($"Your {evt.Skill} skill reached level {newLevel}!");
+        }
+
+        var updated = new SkillData(newLevel, newXp, newThreshold);
+        var newSkills = evt.Skill switch
+        {
+            SkillType.Melee  => skills with { Melee  = updated },
+            SkillType.Block  => skills with { Block  = updated },
+            SkillType.Barter => skills with { Barter = updated },
+            _                => skills
+        };
+
+        entity = entity with { Skills = newSkills };
         return state with { Entities = state.Entities.SetItem(evt.EntityId, entity) };
     }
 

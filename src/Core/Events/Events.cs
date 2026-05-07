@@ -58,6 +58,7 @@ public sealed record QuestCompletedEvent(Guid EntityId, string QuestId) : GameEv
 // ── Levelling ─────────────────────────────────────────────────────────────────
 
 public sealed record XpGainedEvent(Guid EntityId, int Amount) : GameEvent;
+public sealed record SkillXpGainedEvent(Guid EntityId, SkillType Skill, int Amount) : GameEvent;
 
 // ── FOV ──────────────────────────────────────────────────────────────────────
 
