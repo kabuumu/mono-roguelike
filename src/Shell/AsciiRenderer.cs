@@ -586,6 +586,20 @@ public sealed class AsciiRenderer
         Print($"  Weapon: {EquippedName(state, equip?.WeaponId)}", col1X, y, TextSecondary); y += 22;
         Print($"  Armor:  {EquippedName(state, equip?.ArmorId)}",  col1X, y, TextSecondary);
 
+        // Skills section
+        var skills = player.Skills;
+        if (skills is not null)
+        {
+            y += 28;
+            Print("SKILLS", col1X, y, TextPrimary);
+            DrawRect(col1X, y + 18, colInnerW, 1, BorderSide);
+            y += 30;
+
+            DrawSkillRow("Melee",  skills.Melee,  col1X, ref y);
+            DrawSkillRow("Block",  skills.Block,  col1X, ref y);
+            DrawSkillRow("Barter", skills.Barter, col1X, ref y);
+        }
+
         // ── Column 2: Background ──────────────────────────────────────────────
         y = contentY;
         Print("BACKGROUND", col2X, y, TextPrimary);
@@ -750,6 +764,17 @@ public sealed class AsciiRenderer
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private void DrawSkillRow(string name, SkillData skill, int x, ref int y)
+    {
+        int filled = skill.XpToNextLevel > 0
+            ? Math.Min(10, (int)(10.0 * skill.Xp / skill.XpToNextLevel))
+            : 10;
+        var bar = "[" + new string('#', filled) + new string('.', 10 - filled) + "]";
+        Print($"{name,-8} Lv {skill.Level,2}  {bar}  {skill.Xp}/{skill.XpToNextLevel} XP",
+              x, y, TextSecondary);
+        y += 22;
+    }
 
     private void Print(string text, float x, float y, Color color) =>
         _batch.DrawString(_font, text, new Vector2(x, y), color);

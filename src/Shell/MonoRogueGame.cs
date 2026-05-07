@@ -581,6 +581,7 @@ public sealed class MonoRogueGame : Game
         CombatStats: new CombatStatsComponent(Attack: 3, Defense: 0, XpValue: 0),
         Level:       new LevelComponent(Level: 1, Xp: 0, XpToNextLevel: 100),
         Inventory:   new InventoryComponent([], MaxSlots: 10),
-        Equipment:   new EquipmentComponent()
+        Equipment:   new EquipmentComponent(),
+        Skills:      new SkillsComponent(new SkillData(), new SkillData(), new SkillData())
     );
 }
