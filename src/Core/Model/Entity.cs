@@ -21,7 +21,8 @@ public sealed record Entity(
     StairsDownTag?       StairsDown  = null,
     DialogueComponent?   Dialogue    = null,
     PeacefulTag?         Peaceful    = null,
-    BackgroundComponent? Background  = null
+    BackgroundComponent? Background  = null,
+    SkillsComponent?     Skills      = null
 );
 
 /// <summary>Pure helper queries over an entity — no mutation.</summary>

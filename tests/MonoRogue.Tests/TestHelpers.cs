@@ -22,7 +22,8 @@ internal static class TestHelpers
         Level:    new LevelComponent(Level: 1, Xp: 0, XpToNextLevel: 100),
         Inventory: new InventoryComponent(ImmutableArray<Guid>.Empty, MaxSlots: 10),
         Equipment: new EquipmentComponent(),
-        Player:   new PlayerTag()
+        Player:   new PlayerTag(),
+        Skills:   new SkillsComponent(new SkillData(), new SkillData(), new SkillData())
     );
 
     public static Entity MakeEnemy(Position pos, int hp = 10, int attack = 3, int xpValue = 5) => new(

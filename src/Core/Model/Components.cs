@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 public enum ItemType  { Consumable, Weapon, Armor }
 public enum EquipSlot { Weapon, Armor }
 public enum AiState   { Wander, Chase }
+public enum SkillType { Melee, Block, Barter }
 
 // ─────────────────────────────────────────────────
 //  RENDERING
@@ -151,3 +152,15 @@ public sealed record TileTag;
 public sealed record StairsDownTag;
 /// <summary>Marks an NPC that should not engage in combat.</summary>
 public sealed record PeacefulTag;
+
+// ─────────────────────────────────────────────────
+//  SKILLS  (player only)
+// ─────────────────────────────────────────────────
+
+public sealed record SkillData(int Level = 0, int Xp = 0, int XpToNextLevel = 20);
+
+public sealed record SkillsComponent(
+    SkillData Melee,
+    SkillData Block,
+    SkillData Barter
+);
