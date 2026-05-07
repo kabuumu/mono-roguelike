@@ -337,7 +337,7 @@ public static class Reducer
         {
             newXp        -= newThreshold;
             newLevel     += 1;
-            newThreshold  = (newLevel + 1) * 20;
+            newThreshold  = (newLevel + 1) * 20;   // matches SkillData default: threshold = (level+1)*20
             state = state.AppendMessage($"Your {evt.Skill} skill reached level {newLevel}!");
         }
 
