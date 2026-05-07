@@ -21,6 +21,7 @@ public static class CombatSystem
     /// Events emitted (in order):
     ///   MessageLoggedEvent  (attack narrative)
     ///   DamagedEvent
+    ///   [SkillXpGainedEvent]  (Melee for attacker if player; Block for target if player)
     ///   [DiedEvent + MessageLoggedEvent + XpGainedEvent]  (if target dies)
     /// </summary>
     public static ImmutableArray<GameEvent> Resolve(
