@@ -49,6 +49,11 @@ public static class CombatSystem
             $"{attackerName} hits {targetName} for {damage} damage."));
         events.Add(new DamagedEvent(targetId, damage, attackerId));
 
+        if (attacker.IsPlayer())
+            events.Add(new SkillXpGainedEvent(attackerId, SkillType.Melee, 1));
+        if (target.IsPlayer())
+            events.Add(new SkillXpGainedEvent(targetId, SkillType.Block, 1));
+
         // Check if target would die
         var remainingHp = Math.Max(0, (target.Health?.Current ?? 0) - damage);
         if (remainingHp <= 0)
@@ -153,6 +158,7 @@ public static class CombatSystem
         if (e.Equipment?.WeaponId is { } wId &&
             state.Entities.TryGetValue(wId, out var weapon))
             baseAtk += weapon.Item?.AttackBonus ?? 0;
+        baseAtk += e.Skills?.Melee.Level ?? 0;
         return baseAtk;
     }
 
@@ -162,6 +168,7 @@ public static class CombatSystem
         if (e.Equipment?.ArmorId is { } aId &&
             state.Entities.TryGetValue(aId, out var armor))
             baseDef += armor.Item?.DefenseBonus ?? 0;
+        baseDef += e.Skills?.Block.Level ?? 0;
         return baseDef;
     }
 }
