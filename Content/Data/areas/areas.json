@@ -84,7 +84,7 @@
     "clearingSize": [4, 8],
     "enemies": [
       { "templateId": "creature_rat", "count": [5, 10] },
-      { "templateId": "creature_troll", "count": [1, 2] }
+      { "templateId": "creature_troll", "count": [3, 5] }
     ],
     "items": [
       { "templateId": "item_health_potion", "chance": 0.4 }

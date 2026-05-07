@@ -60,6 +60,14 @@
   "item_plank":         { "glyph": "-", "colorOverride": null },
   "item_axe":           { "glyph": "P", "colorOverride": null },
 
+  // Biome NPCs
+  "npc_elder":          { "glyph": "E", "colorOverride": "#FFDD88" },
+  "npc_guard":          { "glyph": "G", "colorOverride": "#8899CC" },
+
+  // Biome consumables
+  "item_scroll":        { "glyph": "?", "colorOverride": "#FFEE99" },
+  "item_herb":          { "glyph": "%", "colorOverride": "#88CC44" },
+
   // Swamp tiles
   "tile_swamp":         { "glyph": "~", "colorOverride": "#3B5A2B" },
   "env_swamp_tree":     { "glyph": "T", "colorOverride": "#2A4A1A" }
