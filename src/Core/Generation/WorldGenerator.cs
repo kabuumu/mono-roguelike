@@ -306,7 +306,7 @@ public static class WorldGenerator
             StampBuilding(rect, placeTile, buildingRng);
 
         // NPCs per building
-        string[] traderPool = ["npc_herbalist", "npc_trader"];
+        string[] traderPool = ["npc_herbalist", "npc_trader", "npc_elder", "npc_guard"];
         for (int i = 0; i < buildings.Count; i++)
         {
             var rect = buildings[i];

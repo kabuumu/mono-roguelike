@@ -8,12 +8,22 @@
     "blocksMovement": true,
     "isPeaceful":     true,
     "hasDialogue":    true,
-    "dialogueLines": [
-      "Welcome to Millhaven, adventurer.",
-      "Dark creatures have crept up from the depths beneath our town.",
-      "If you are brave enough, descend into the dungeon and push them back.",
-      "Return when you have reached the sixth level. Only then will we be safe.",
-      "May fortune guide your blade."
+    "dialogPool": {
+      "after_quest_completed:quest_cave_scout": [
+        "You went in and came back out. That's more than most.",
+        "Stay safe out there. The caverns go deeper than anyone knows."
+      ],
+      "default": [
+        "Welcome to Millhaven, adventurer.",
+        "Dark creatures have crept up from the depths beneath our town.",
+        "The Crystal Caverns to the east concern me most - we need to know what stirs in there.",
+        "Return when you have reached the sixth level of the dungeon. Only then will we be safe.",
+        "May fortune guide your blade."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "scout_cave", "label": "I'll scout the caverns.",  "action": "give_quest:quest_cave_scout" },
+      { "id": "farewell",   "label": "Farewell.",                "action": "close" }
     ]
   },
   {
@@ -39,11 +49,21 @@
     "blocksMovement": true,
     "isPeaceful":     true,
     "hasDialogue":    true,
-    "dialogueLines": [
-      "Halt! ...Actually, go ahead.",
-      "We are stretched thin. Half the guard went down and didn't come back.",
-      "The entrance to the dungeon is to the south. Watch your step.",
-      "If you find any of our gear down there, it's yours."
+    "dialogPool": {
+      "after_quest_completed:quest_boar_cull": [
+        "The food stores are intact. Good work.",
+        "Stay out of trouble - or don't, I suppose that's the point."
+      ],
+      "default": [
+        "Halt! ...Actually, go ahead.",
+        "We are stretched thin. Half the guard went down and didn't come back.",
+        "Boars have been breaking into the food stores at the north edge of town. Three of them.",
+        "If you deal with that, I'll make it worth your while."
+      ]
+    },
+    "dialogOptions": [
+      { "id": "boar_cull", "label": "I'll handle the boars.", "action": "give_quest:quest_boar_cull" },
+      { "id": "farewell",  "label": "Farewell.",              "action": "close" }
     ]
   },
   {
